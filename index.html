@@ -3,234 +3,301 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>العيادة المدرسية الذكية | محاكاة واقعية</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>العيادة المدرسية الذكية — MVP</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="logo">SSC</div>
-        <div class="brandText">
-          <div class="title">العيادة المدرسية الذكية</div>
-          <div class="subtitle">محاكاة تشغيل — فحص ذاتي + تحليل ذكاء اصطناعي + قرار</div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🏥</div>
+      <div>
+        <div class="brandTitle">العيادة المدرسية الذكية</div>
+        <div class="brandSub">MVP محاكاة تشغيل واقعية — أدوار + صلاحيات + اتصال مرئي</div>
+      </div>
+    </div>
+
+    <nav class="topnav">
+      <button class="chip" data-nav="home">الرئيسية</button>
+      <button class="chip" data-nav="features">المزايا</button>
+      <button class="chip" data-nav="demo">الدخول والتجربة</button>
+      <button class="chip" data-nav="contact">التواصل</button>
+    </nav>
+
+    <div class="topActions">
+      <button class="btnGhost" id="btnSeed">تهيئة بيانات تجريبية</button>
+      <button class="btnPrimary" id="btnGoDemo">ابدأ التجربة</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- HOME -->
+    <section class="section view" id="view-home">
+      <div class="hero">
+        <div class="heroText">
+          <h1>عيادة مدرسية + استشارة مرئية + لوحات تحكم</h1>
+          <p class="muted">
+            محاكاة تشغيل واقعية: طالب/مدرسة/ولي أمر/طبيب… مع صلاحيات واضحة وسجل زيارات وتنبيهات.
+          </p>
+
+          <div class="heroStats">
+            <div class="stat">
+              <div class="statNum">4</div>
+              <div class="statLbl">أدوار أساسية</div>
+            </div>
+            <div class="stat">
+              <div class="statNum">1</div>
+              <div class="statLbl">مكالمة مرئية (محاكاة)</div>
+            </div>
+            <div class="stat">
+              <div class="statNum">3</div>
+              <div class="statLbl">لوحات تحكم</div>
+            </div>
+          </div>
+
+          <div class="heroCtas">
+            <button class="btnPrimary" id="btnStartNow">جرّب الدخول الآن</button>
+            <button class="btnGhost" id="btnTour">شوف المزايا</button>
+          </div>
+
+          <div class="note">
+            ✅ مناسب للعرض أمام لجنة التحكيم: “النظام يعمل”، حتى لو كانت البيانات تجريبية.
+          </div>
+        </div>
+
+        <div class="heroCard">
+          <div class="cardTitle">حالة اليوم (محاكاة)</div>
+          <div class="cardRow">
+            <span class="badge ok">سليم</span>
+            <span class="muted">طالب: محمد (صف 6) — قياسات مكتملة</span>
+          </div>
+          <div class="cardRow">
+            <span class="badge warn">تنبيه</span>
+            <span class="muted">درجة حرارة مرتفعة — تم إنشاء طلب استشارة</span>
+          </div>
+          <div class="cardRow">
+            <span class="badge info">موعد</span>
+            <span class="muted">استشارة مرئية مع الطبيب خلال 5 دقائق</span>
+          </div>
         </div>
       </div>
+    </section>
 
-      <nav class="tabs" role="tablist" aria-label="أقسام المحاكاة">
-        <button class="tab active" data-tab="sim">المحاكاة</button>
-        <button class="tab" data-tab="tech">التقنيات</button>
-        <button class="tab" data-tab="kpi">KPI</button>
-        <button class="tab" data-tab="contact">التواصل</button>
-      </nav>
-    </header>
+    <!-- FEATURES -->
+    <section class="section view hidden" id="view-features">
+      <h2>المزايا (مُجهّزة كأقسام جاهزة)</h2>
+      <p class="muted">كل قسم هنا مرتبط مباشرة باللوحات، مو كلام إنشائي.</p>
 
-    <main class="content">
-      <!-- SIM -->
-      <section class="panel show" id="tab-sim">
-        <div class="grid">
-          <!-- Left: Scenario + Patient -->
-          <aside class="card">
-            <div class="cardHeader">
-              <h2>السيناريو</h2>
-              <span class="chip" id="scenarioChip">جاهز</span>
+      <div class="grid">
+        <article class="feature">
+          <div class="featureIcon">🎥</div>
+          <h3>اتصال مرئي للاستشارات</h3>
+          <p>تشغيل كاميرا + سيناريو اتصال (محلي/تجريبي) مع تسجيل ملخص الاستشارة.</p>
+        </article>
+
+        <article class="feature">
+          <div class="featureIcon">🧑‍⚕️</div>
+          <h3>لوحة الطبيب</h3>
+          <p>قائمة الطلبات، سجل الحالات، إصدار توصية/إحالة، رسائل لولي الأمر.</p>
+        </article>
+
+        <article class="feature">
+          <div class="featureIcon">🏫</div>
+          <h3>لوحة المدرسة</h3>
+          <p>إدارة الطلبة، إنشاء طلب استشارة، متابعة الزيارات، صلاحيات المستخدمين.</p>
+        </article>
+
+        <article class="feature">
+          <div class="featureIcon">👨‍👩‍👧</div>
+          <h3>لوحة ولي الأمر</h3>
+          <p>الموافقة، متابعة القياسات، استقبال تنبيه “طارئ/عادي”، دخول المكالمة.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <strong>النقطة الذهبية:</strong> اللجنة تحب تشوف “سير عمل” واضح. هنا عندك workflow كامل من دخول الطالب → قياس → تنبيه → استشارة → توصية.
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section class="section view hidden" id="view-demo">
+      <div class="twoCol">
+        <!-- LOGIN -->
+        <div class="panel">
+          <div class="panelHead">
+            <h2>الدخول والتجربة</h2>
+            <p class="muted">اختر الدور وسجّل دخول (تجريبي). لا تخاف… ما نرسل بياناتك لأحد 😄</p>
+          </div>
+
+          <div class="form">
+            <label>الدور</label>
+            <select id="role">
+              <option value="school">مدير/منسق المدرسة</option>
+              <option value="doctor">الطبيب</option>
+              <option value="parent">ولي الأمر</option>
+            </select>
+
+            <label>اسم المستخدم</label>
+            <input id="username" placeholder="مثال: admin" />
+
+            <label>كلمة المرور</label>
+            <input id="password" type="password" placeholder="مثال: 1234" />
+
+            <div class="formActions">
+              <button class="btnPrimary" id="btnLogin">دخول</button>
+              <button class="btnGhost" id="btnLogout">تسجيل خروج</button>
             </div>
 
-            <div class="patient">
-              <div class="cam">
-                <div class="camBar">
-                  <span class="camTag">CAM_01</span>
-                  <span class="live">LIVE</span>
-                </div>
-                <img id="patientImg" src="./العيادة المدرسية الذكية.png" alt="صورة الطالب" onerror="this.style.display='none'; document.getElementById('imgFallback').style.display='grid';">
-                <div id="imgFallback" class="imgFallback" style="display:none;">
-                  <div class="avatar">👦</div>
-                  <div class="muted">ارفع صورة باسم: <b>العيادة المدرسية الذكية.png</b><br/>أو عدّل اسم الصورة في الكود</div>
-                </div>
-              </div>
-
-              <div class="patientMeta">
-                <div class="metaRow">
-                  <span class="muted">الاسم</span>
-                  <b id="pName">طالب (تجريبي)</b>
-                </div>
-                <div class="metaRow">
-                  <span class="muted">العمر</span>
-                  <b id="pAge">12</b>
-                </div>
-                <div class="metaRow">
-                  <span class="muted">الصف</span>
-                  <b id="pGrade">سادس</b>
-                </div>
-              </div>
-
-              <div class="actions">
-                <button class="btn primary" id="btnStart">بدء الفحص</button>
-                <button class="btn" id="btnReset">إعادة</button>
-              </div>
-            </div>
-
-            <div class="timeline">
-              <h3>الخطوات</h3>
-              <ol id="steps">
-                <li class="done">الدخول والتحقق</li>
-                <li>الفحص الذاتي (7 مؤشرات)</li>
-                <li>تحليل الذكاء الاصطناعي</li>
-                <li>القرار والإحالة</li>
-              </ol>
-            </div>
-          </aside>
-
-          <!-- Right: Live Dashboard -->
-          <section class="card dashboard">
-            <div class="cardHeader">
-              <h2>لوحة المحاكاة</h2>
-              <div class="statusPills">
-                <span class="pill ok" id="pillOk">حالة سليمة</span>
-                <span class="pill warn" id="pillWarn">ملاحظة</span>
-                <span class="pill danger" id="pillDanger">خطر</span>
-              </div>
-            </div>
-
-            <div class="summary">
-              <div class="summaryCard">
-                <div class="summaryTitle">حالة النظام</div>
-                <div class="summaryValue" id="sysState">وضع الاستعداد</div>
-                <div class="progress">
-                  <div class="bar" id="progressBar" style="width: 0%"></div>
-                </div>
-                <div class="muted" id="sysHint">اضغط “بدء الفحص” لتشغيل المحاكاة.</div>
-              </div>
-
-              <div class="summaryCard">
-                <div class="summaryTitle">نتيجة مبدئية</div>
-                <div class="summaryValue" id="triageLabel">—</div>
-                <div class="muted" id="triageReason">بانتظار البيانات…</div>
-              </div>
-
-              <div class="summaryCard">
-                <div class="summaryTitle">توصية</div>
-                <div class="summaryValue" id="recommendation">—</div>
-                <div class="muted">هذه محاكاة عرض (Demo) قابلة للتطوير إلى MVP كامل.</div>
-              </div>
-            </div>
-
-            <div class="vitals">
-              <div class="vital">
-                <div class="vTop">
-                  <span>نبض القلب</span>
-                  <span class="unit">bpm</span>
-                </div>
-                <div class="vVal" id="hr">--</div>
-                <div class="spark"><span id="hrSpark"></span></div>
-              </div>
-
-              <div class="vital">
-                <div class="vTop">
-                  <span>درجة الحرارة</span>
-                  <span class="unit">°C</span>
-                </div>
-                <div class="vVal" id="temp">--</div>
-                <div class="spark"><span id="tempSpark"></span></div>
-              </div>
-
-              <div class="vital">
-                <div class="vTop">
-                  <span>ضغط الدم</span>
-                  <span class="unit">mmHg</span>
-                </div>
-                <div class="vVal" id="bp">--</div>
-                <div class="spark"><span id="bpSpark"></span></div>
-              </div>
-
-              <div class="vital">
-                <div class="vTop">
-                  <span>تشبع الأكسجين</span>
-                  <span class="unit">%</span>
-                </div>
-                <div class="vVal" id="spo2">--</div>
-                <div class="spark"><span id="spo2Spark"></span></div>
-              </div>
-
-              <div class="vital wide">
-                <div class="vTop">
-                  <span>سجل الأحداث</span>
-                  <span class="unit">Live</span>
-                </div>
-                <div class="log" id="log"></div>
-              </div>
-            </div>
-
-            <div class="controls">
-              <button class="btn ok" data-sim="ok">محاكاة حالة سليمة</button>
-              <button class="btn warn" data-sim="warn">محاكاة ملاحظة</button>
-              <button class="btn danger" data-sim="danger">محاكاة خطر</button>
-              <button class="btn ghost" id="btnExport">نسخ تقرير (نص)</button>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <!-- TECH -->
-      <section class="panel" id="tab-tech">
-        <div class="card">
-          <h2>التقنيات</h2>
-          <div class="twoCols">
-            <div class="miniCard">
-              <h3>IoT</h3>
-              <p>أجهزة قياس مرتبطة لحظيًا (حرارة، نبض، ضغط، SpO2) مع توحيد البيانات وتقليل الأخطاء.</p>
-            </div>
-            <div class="miniCard">
-              <h3>AI</h3>
-              <p>تصنيف آلي (Triage) + مؤشرات خطر + توصية وتحويل وفق السياسات.</p>
-            </div>
-            <div class="miniCard">
-              <h3>التحقق</h3>
-              <p>مطابقة هوية الطالب/التذكرة + سجل دخول + سجل صحي مختصر.</p>
-            </div>
-            <div class="miniCard">
-              <h3>التقارير</h3>
-              <p>تقرير مختصر فوري + قابل للإرسال لولي الأمر/المدرسة/الجهة الصحية (حسب الصلاحيات).</p>
+            <div class="helper">
+              حسابات جاهزة:
+              <span class="kbd">admin / 1234</span> (مدرسة) —
+              <span class="kbd">dr / 1234</span> (طبيب) —
+              <span class="kbd">parent / 1234</span> (ولي أمر)
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- KPI -->
-      <section class="panel" id="tab-kpi">
-        <div class="card">
-          <h2>KPI المقترحة</h2>
-          <ul class="kpi">
-            <li>تقليل زمن الفرز الأولي إلى أقل من <b>60 ثانية</b>.</li>
-            <li>رفع دقة رصد الحالات الحرجة بنسبة <b>+20%</b> (مقارنة بالورقي).</li>
-            <li>تقليل الإحالات غير الضرورية بنسبة <b>-15%</b>.</li>
-            <li>رفع الالتزام بقياس المؤشرات الحيوية <b>+30%</b>.</li>
-          </ul>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section class="panel" id="tab-contact">
-        <div class="card">
-          <h2>التواصل</h2>
-          <p class="muted">ضع بياناتك هنا (إيميل/هاتف/جهة). الآن نخليها نص تجريبي.</p>
-          <div class="contactBox">
-            <div><b>إعداد وتطوير:</b> عبدالعزيز جميل الربيعي</div>
-            <div><b>الموقع:</b> الطائف</div>
-            <div><b>ملاحظة:</b> هذه صفحة عرض (Demo) ويمكن تحويلها لنظام MVP متصل بواجهة API.</div>
+        <!-- DASHBOARD -->
+        <div class="panel">
+          <div class="panelHead">
+            <h2>لوحة التحكم (حسب الصلاحية)</h2>
+            <p class="muted">بتتغير تلقائيًا بعد تسجيل الدخول.</p>
           </div>
-        </div>
-      </section>
-    </main>
 
-    <footer class="footer">
-      <span>Smart School Clinic Initiative © <span id="year"></span> — All rights reserved</span>
-    </footer>
-  </div>
+          <!-- SCHOOL DASH -->
+          <div class="dash hidden" id="dash-school">
+            <div class="dashTop">
+              <h3>لوحة المدرسة</h3>
+              <div class="badges">
+                <span class="badge info">صلاحية: إدارة</span>
+                <span class="badge ok">سجل زيارات</span>
+              </div>
+            </div>
+
+            <div class="cards2">
+              <div class="miniCard">
+                <div class="miniTitle">إنشاء طلب استشارة</div>
+                <div class="miniBody">
+                  <label>الطالب</label>
+                  <input id="schoolStudent" placeholder="محمد / صف 6" />
+                  <label>سبب الطلب</label>
+                  <select id="schoolReason">
+                    <option value="fever">اشتباه حرارة</option>
+                    <option value="injury">إصابة بسيطة</option>
+                    <option value="asthma">أعراض تنفسية</option>
+                    <option value="other">أخرى</option>
+                  </select>
+                  <button class="btnPrimary w100" id="btnCreateCase">إرسال للطبيب</button>
+                </div>
+              </div>
+
+              <div class="miniCard">
+                <div class="miniTitle">سجل اليوم (محاكاة)</div>
+                <div class="miniBody">
+                  <div class="list" id="schoolCases"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DOCTOR DASH -->
+          <div class="dash hidden" id="dash-doctor">
+            <div class="dashTop">
+              <h3>لوحة الطبيب</h3>
+              <div class="badges">
+                <span class="badge info">صلاحية: طبيب</span>
+                <span class="badge warn">طلبات جديدة</span>
+              </div>
+            </div>
+
+            <div class="cards2">
+              <div class="miniCard">
+                <div class="miniTitle">طلبات الاستشارة</div>
+                <div class="miniBody">
+                  <div class="list" id="doctorCases"></div>
+                </div>
+              </div>
+
+              <div class="miniCard">
+                <div class="miniTitle">إجراء الاستشارة</div>
+                <div class="miniBody">
+                  <div class="videoWrap">
+                    <video id="localVideo" autoplay playsinline muted></video>
+                    <div class="videoHint">كاميرتك (محلي)</div>
+                  </div>
+                  <div class="row2">
+                    <button class="btnPrimary" id="btnStartCam">تشغيل الكاميرا</button>
+                    <button class="btnGhost" id="btnEndCam">إيقاف</button>
+                  </div>
+
+                  <label>ملخص الطبيب</label>
+                  <textarea id="doctorNote" rows="3" placeholder="مثال: الاشتباه حرارة — سوائل + متابعة + قياس بعد ساعتين"></textarea>
+                  <button class="btnPrimary w100" id="btnCloseCase">إغلاق الحالة + إرسال التوصية</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PARENT DASH -->
+          <div class="dash hidden" id="dash-parent">
+            <div class="dashTop">
+              <h3>لوحة ولي الأمر</h3>
+              <div class="badges">
+                <span class="badge info">صلاحية: ولي أمر</span>
+                <span class="badge ok">تنبيهات</span>
+              </div>
+            </div>
+
+            <div class="cards2">
+              <div class="miniCard">
+                <div class="miniTitle">آخر تنبيه</div>
+                <div class="miniBody" id="parentAlert">
+                  لا توجد تنبيهات بعد.
+                </div>
+              </div>
+
+              <div class="miniCard">
+                <div class="miniTitle">نتيجة الاستشارة</div>
+                <div class="miniBody">
+                  <div class="muted">التوصية تظهر هنا بعد إغلاق الطبيب للحالة.</div>
+                  <div class="resultBox" id="parentResult">—</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- EMPTY -->
+          <div class="dash" id="dash-empty">
+            <div class="emptyState">
+              <div class="emptyIcon">🔒</div>
+              <div>
+                <div class="emptyTitle">سجّل دخول عشان تظهر لوحة الصلاحيات</div>
+                <div class="muted">بدون دخول = بدون صلاحيات… حتى لو كنت “مدير الكون”.</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section view hidden" id="view-contact">
+      <h2>التواصل</h2>
+      <p class="muted">ضع بياناتك هنا لاحقًا (إيميل/واتساب/لينكدإن).</p>
+
+      <div class="callout">
+        <strong>اقتراح احترافي للعرض:</strong> أضف زر “طلب عرض تجريبي” + QR يفتح الموقع مباشرة.
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div>Smart School Clinic Initiative © <span id="year"></span></div>
+    <div class="muted">MVP Demo — GitHub Pages</div>
+  </footer>
 
   <script src="./app.js"></script>
 </body>
