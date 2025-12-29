@@ -145,3 +145,687 @@
 
 </body>
 </html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="description" content="العيادة المدرسية الذكية — مبادرة وطنية لرفع جودة الحياة في المدارس عبر التحول الرقمي والذكاء الاصطناعي وإنترنت الأشياء." />
+  <title>العيادة المدرسية الذكية</title>
+
+  <!-- خط عربي جميل (اختياري) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1a2f;
+      --card:#101e38;
+      --stroke:rgba(255,255,255,.08);
+      --text:#e9f1ff;
+      --muted:rgba(233,241,255,.72);
+      --muted2:rgba(233,241,255,.55);
+      --brand:#27c07d;
+      --brand2:#4aa3ff;
+      --warn:#ff5a5f;
+      --shadow: 0 18px 60px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius2:26px;
+      --max:1100px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(1100px 550px at 30% 10%, rgba(74,163,255,.20), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(39,192,125,.18), transparent 55%),
+        radial-gradient(800px 450px at 50% 80%, rgba(255,90,95,.10), transparent 60%),
+        linear-gradient(180deg, #070b14 0%, var(--bg) 45%, #070b14 100%);
+      color:var(--text);
+      overflow-x:hidden;
+    }
+
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 18px}
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px);
+      background: rgba(11,18,32,.65);
+      border-bottom:1px solid var(--stroke);
+    }
+    .topbar .row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; padding:12px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.2px;
+    }
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.18), transparent 45%),
+        linear-gradient(135deg, rgba(39,192,125,.95), rgba(74,163,255,.95));
+      box-shadow: 0 10px 30px rgba(39,192,125,.20);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    nav{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+    nav a{
+      padding:8px 12px; border-radius:12px;
+      color:var(--muted);
+      border:1px solid transparent;
+      transition:.2s;
+      font-weight:600;
+      font-size:14px;
+    }
+    nav a:hover{
+      color:var(--text);
+      border-color:rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+    }
+    .cta{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn{
+      cursor:pointer;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      font-weight:800;
+      transition:.2s;
+      display:inline-flex; align-items:center; gap:8px;
+      user-select:none;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.06)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(39,192,125,.95), rgba(74,163,255,.95));
+      border-color:rgba(255,255,255,.12);
+      box-shadow: 0 16px 40px rgba(39,192,125,.20);
+    }
+    .btn.primary:hover{filter:saturate(1.05) brightness(1.02)}
+    .pill{
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .dot{width:8px;height:8px;border-radius:99px;background:var(--brand); box-shadow:0 0 0 6px rgba(39,192,125,.16)}
+
+    /* Hero */
+    .hero{padding:34px 0 10px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .heroCard{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      min-height: 320px;
+    }
+    .heroCard .inner{padding:22px 22px 18px}
+    .kicker{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    h1{
+      margin:12px 0 8px;
+      font-size:46px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .accent{color:var(--brand)}
+    .lead{
+      margin:0 0 16px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.9;
+      max-width: 58ch;
+    }
+    .heroActions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    .stats{
+      display:grid; grid-template-columns: repeat(3, 1fr);
+      gap:10px; margin-top:18px;
+    }
+    .stat{
+      padding:12px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(16,30,56,.45);
+    }
+    .stat b{display:block; font-size:18px}
+    .stat span{display:block; color:var(--muted2); font-size:12px; margin-top:2px}
+
+    .heroVisual{
+      height:100%;
+      display:flex;
+      align-items:stretch;
+      justify-content:stretch;
+    }
+    .visualWrap{
+      width:100%;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(15,26,47,.45);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      position:relative;
+    }
+    .visualWrap img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(1.06) contrast(1.05);
+      transform:scale(1.02);
+    }
+    .overlay{
+      position:absolute; inset:0;
+      background:
+        radial-gradient(900px 500px at 50% 10%, rgba(11,18,32,.10), rgba(11,18,32,.78)),
+        linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(11,18,32,.92) 100%);
+      pointer-events:none;
+    }
+    .badgeStack{
+      position:absolute; bottom:14px; right:14px; left:14px;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .miniCard{
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(11,18,32,.55);
+      backdrop-filter: blur(10px);
+      display:flex; gap:10px; align-items:center;
+    }
+    .miniIcon{
+      width:34px;height:34px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, rgba(74,163,255,.35), rgba(39,192,125,.35));
+      display:grid; place-items:center;
+      font-weight:900;
+    }
+    .miniText b{display:block; font-size:13px}
+    .miniText span{display:block; font-size:11px; color:var(--muted2); margin-top:2px}
+
+    /* Sections */
+    section{padding:26px 0}
+    .sectionHead{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+    .sectionHead h2{margin:0; font-size:22px}
+    .sectionHead p{margin:0; color:var(--muted); font-size:13px; max-width: 65ch; line-height:1.9}
+
+    .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+    .grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:14px}
+
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(16,30,56,.42);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 14px 50px rgba(0,0,0,.22);
+      transition: .25s;
+      position:relative;
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.16)}
+    .card .pad{padding:16px}
+    .card h3{margin:0 0 6px; font-size:18px}
+    .card p{margin:0; color:var(--muted); font-size:13px; line-height:1.9}
+    .thumb{
+      width:100%; height:180px;
+      background: rgba(255,255,255,.04);
+      display:block;
+      object-fit:cover;
+    }
+    .tagRow{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap}
+    .tag{
+      font-size:12px; padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.78);
+    }
+
+    /* Timeline */
+    .timeline{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(15,26,47,.40);
+      border-radius: var(--radius2);
+      padding:16px;
+      overflow:hidden;
+    }
+    .steps{display:grid; grid-template-columns: repeat(4,1fr); gap:12px}
+    .step{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(16,30,56,.35);
+      border-radius: 18px;
+      padding:14px;
+      position:relative;
+      min-height: 120px;
+    }
+    .num{
+      width:40px; height:40px; border-radius:16px;
+      display:grid; place-items:center;
+      font-weight:900;
+      color:#07101f;
+      background: linear-gradient(135deg, rgba(39,192,125,.95), rgba(74,163,255,.95));
+      box-shadow: 0 12px 30px rgba(74,163,255,.20);
+      margin-bottom:10px;
+    }
+    .step b{display:block; margin-bottom:6px}
+    .step span{color:var(--muted); font-size:12.5px; line-height:1.8}
+
+    /* Partners */
+    .partners{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(15,26,47,.35);
+      border-radius: var(--radius2);
+      padding:16px;
+    }
+    .partnerItem{
+      display:flex; gap:10px; align-items:center;
+      padding:10px 12px;
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(16,30,56,.35);
+      min-width: 220px;
+      flex: 1;
+    }
+    .partnerIcon{
+      width:42px; height:42px; border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      display:grid; place-items:center;
+      font-weight:900;
+      color:rgba(255,255,255,.85);
+    }
+    .partnerItem b{display:block}
+    .partnerItem span{display:block; color:var(--muted2); font-size:12px; margin-top:2px}
+
+    /* Footer */
+    footer{
+      padding:22px 0 34px;
+      border-top:1px solid rgba(255,255,255,.08);
+      color:rgba(233,241,255,.65);
+    }
+    .foot{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    }
+    .credit{
+      padding:10px 12px; border-radius: 16px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    /* Mobile */
+    @media (max-width: 980px){
+      .heroGrid{grid-template-columns:1fr}
+      h1{font-size:38px}
+      .stats{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr}
+      nav{display:none}
+      .partnerItem{min-width: 100%}
+      .thumb{height:200px}
+    }
+
+    /* Simple reveal animation */
+    .reveal{opacity:0; transform: translateY(10px); transition:.6s ease}
+    .reveal.on{opacity:1; transform: translateY(0)}
+  </style>
+</head>
+
+<body>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="row">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <div style="font-size:14px; color:rgba(233,241,255,.8); font-weight:800">العيادة المدرسية الذكية</div>
+            <div style="font-size:11px; color:rgba(233,241,255,.55); margin-top:2px">Smart School Clinic Initiative</div>
+          </div>
+        </div>
+
+        <nav aria-label="روابط">
+          <a href="#about">عن المبادرة</a>
+          <a href="#partners">الشركاء</a>
+          <a href="#tech">التقنيات</a>
+          <a href="#journey">رحلة الطالب</a>
+          <a href="#mvp">MVP</a>
+          <a href="#contact">تواصل</a>
+        </nav>
+
+        <div class="cta">
+          <a class="btn" href="#mvp">عرض المحاكاة</a>
+          <a class="btn primary" href="#contact">ابدأ التعاون</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="hero" id="about">
+    <div class="wrap">
+      <div class="heroGrid">
+        <div class="heroCard reveal">
+          <div class="inner">
+            <div class="kicker">
+              <span class="pill"><span class="dot"></span> ريادة التحول الرقمي في الصحة الوقائية</span>
+              <span class="pill" style="border-color:rgba(74,163,255,.25)">متوافق مع بيئة المدارس</span>
+            </div>
+
+            <h1>العيادة المدرسية <span class="accent">الذكية</span></h1>
+            <p class="lead">
+              مبادرة وطنية لتحويل المدرسة إلى نقطة ارتكاز صحية ذكية: فحص ذاتي سريع، متابعة وقائية،
+              وتنبيهات فورية—مع لوحات مؤشرات تساعد صُنّاع القرار على رفع جودة الحياة داخل المدارس.
+            </p>
+
+            <div class="heroActions">
+              <a class="btn primary" href="#tech">شوف التقنيات</a>
+              <a class="btn" href="#journey">رحلة الطالب</a>
+              <a class="btn" href="#contact">ملف تعريفي / تواصل</a>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <b>فحص ذاتي سريع</b>
+                <span>قياسات أساسية + تجربة سهلة للطالب</span>
+              </div>
+              <div class="stat">
+                <b>تحليل وتنبؤ</b>
+                <span>مؤشرات + مقارنة بالسجل الصحي/المدرسي</span>
+              </div>
+              <div class="stat">
+                <b>تنبيهات ذكية</b>
+                <span>خفض الأخطاء وتسريع الاستجابة</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual -->
+        <div class="heroVisual reveal">
+          <div class="visualWrap" aria-label="صورة توضيحية">
+            <!-- غيّر الصورة هنا لو تبغى: -->
+            <img src="unnamed-2.png" alt="واجهة العيادة المدرسية الذكية" />
+            <div class="overlay"></div>
+
+            <div class="badgeStack">
+              <div class="miniCard">
+                <div class="miniIcon">AI</div>
+                <div class="miniText">
+                  <b>تحليل الذكاء الاصطناعي</b>
+                  <span>تصنيف + توصيات مبدئية</span>
+                </div>
+              </div>
+              <div class="miniCard">
+                <div class="miniIcon">IoT</div>
+                <div class="miniText">
+                  <b>أجهزة متصلة</b>
+                  <span>قياس دون إدخال يدوي</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Partners -->
+  <section id="partners">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>شركاء النجاح والمنظومة</h2>
+          <p>الهدف: تكامل حكومي/تقني يضمن موثوقية البيانات وسهولة التبنّي داخل المدارس.</p>
+        </div>
+        <a class="btn" href="#contact">اقتراح شراكة</a>
+      </div>
+
+      <div class="partners reveal">
+        <div class="partnerItem">
+          <div class="partnerIcon">+</div>
+          <div>
+            <b>وزارة الصحة</b>
+            <span>التوجيه الطبي والمعايير الوقائية</span>
+          </div>
+        </div>
+
+        <div class="partnerItem">
+          <div class="partnerIcon">🎓</div>
+          <div>
+            <b>وزارة التعليم</b>
+            <span>تشغيل النموذج داخل المدارس</span>
+          </div>
+        </div>
+
+        <div class="partnerItem">
+          <div class="partnerIcon">S</div>
+          <div>
+            <b>سدايا (SDAIA)</b>
+            <span>الذكاء الاصطناعي وحوكمة البيانات</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technologies -->
+  <section id="tech">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>تقنيات المستقبل في مدارسنا اليوم</h2>
+          <p>كل بطاقة هنا تمثل “جزء” من الحل: جهاز/خدمة/تحليل… والنتيجة تجربة سلسة ومقنعة للجنة التحكيم.</p>
+        </div>
+        <span class="pill" style="border-color:rgba(39,192,125,.28)">واجهة عربية + RTL + Mobile Ready</span>
+      </div>
+
+      <div class="grid3">
+        <article class="card reveal">
+          <img class="thumb" src="unnamed-3.png" alt="إنترنت الأشياء IoT" />
+          <div class="pad">
+            <h3>إنترنت الأشياء (IoT)</h3>
+            <p>أجهزة طبية متصلة ترسل البيانات لحظيًا لتقليل الإدخال اليدوي ورفع جودة القياس.</p>
+            <div class="tagRow">
+              <span class="tag">قياسات تلقائية</span>
+              <span class="tag">تقليل الأخطاء</span>
+              <span class="tag">تكامل سحابي</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <img class="thumb" src="unnamed-4.png" alt="الواقع المعزز AR" />
+          <div class="pad">
+            <h3>الواقع المعزز (AR)</h3>
+            <p>إظهار بيانات الطالب/التنبيهات على واجهة واضحة—تدعم التوجيه السريع أثناء الحالات.</p>
+            <div class="tagRow">
+              <span class="tag">عرض حي</span>
+              <span class="tag">دعم القرار</span>
+              <span class="tag">تحسين الاستجابة</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <img class="thumb" src="unnamed-5.png" alt="التحليل والتنبؤ" />
+          <div class="pad">
+            <h3>التحليل والتنبؤ</h3>
+            <p>مقارنة مؤشرات الطالب بالسجل التاريخي لرصد الأنماط ورفع جودة التدخل الوقائي.</p>
+            <div class="tagRow">
+              <span class="tag">مؤشرات</span>
+              <span class="tag">تنبؤ مبكر</span>
+              <span class="tag">لوحة متابعة</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey -->
+  <section id="journey">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>رحلة الطالب</h2>
+          <p>تصميم الرحلة بشكل واضح يسهل على اللجنة “فهم القيمة” خلال أقل من دقيقة.</p>
+        </div>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <b>الدخول والتحقق</b>
+            <span>تعرف سريع + فحص أولي (مثل الحرارة) عند الحاجة حسب سياسة المدرسة.</span>
+          </div>
+          <div class="step">
+            <div class="num">2</div>
+            <b>الفحص الذاتي</b>
+            <span>قياسات أساسية عبر محطة فحص ذكية لتجربة سريعة ومقروءة.</span>
+          </div>
+          <div class="step">
+            <div class="num">3</div>
+            <b>تحليل الذكاء الاصطناعي</b>
+            <span>تصنيف + توصيات مبدئية + تنبيه للحالات التي تتطلب متابعة.</span>
+          </div>
+          <div class="step">
+            <div class="num">4</div>
+            <b>الإحالة والمتابعة</b>
+            <span>توجيه للمرشد/العيادة/الأسرة حسب السيناريو، مع سجل واضح.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MVP -->
+  <section id="mvp">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>المحاكاة / MVP</h2>
+          <p>هنا تحط لقطات من واجهة المحاكاة (صور) أو رابط تجربة. إذا تبي أرتّب لك “صفحة عرض” للمحاكاة داخل نفس الموقع—أجهزها لك.</p>
+        </div>
+        <a class="btn primary" href="#contact">أبغى صفحة عرض للمحاكاة</a>
+      </div>
+
+      <div class="grid2">
+        <article class="card reveal">
+          <img class="thumb" src="unnamed-6.png" alt="واجهة تحليل" />
+          <div class="pad">
+            <h3>شاشة التحليل</h3>
+            <p>عرض مبسط للحالة + حالة الاستعداد + رسائل النظام بطريقة مفهومة.</p>
+          </div>
+        </article>
+
+        <article class="card reveal">
+          <!-- إذا عندك صورة اسمها "العيادة_المدرسية_الذكية.png" ممتاز -->
+          <img class="thumb" src="العيادة_المدرسية_الذكية.png" alt="شعار/هوية" />
+          <div class="pad">
+            <h3>هوية المشروع</h3>
+            <p>إبراز المبادرة كمنتج وطني: هوية + قصة + قيمة + خارطة طريق.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="sectionHead">
+        <div>
+          <h2>التواصل</h2>
+          <p>إذا تبي نسخة “أكثر فخامة” للجنة التحكيم: أضيف قسم أثر، مؤشرات KPI، وخارطة تنفيذ 90 يوم.</p>
+        </div>
+      </div>
+
+      <div class="card reveal">
+        <div class="pad" style="display:grid; gap:10px">
+          <div class="pill" style="width:max-content">
+            <span style="opacity:.9">إعداد وتطوير الفكرة:</span>
+            <b style="color:var(--brand); margin-right:6px">أخصائي / عبدالعزيز جميل الربيعي</b>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:6px">
+            <!-- عدّل البريد/الهاتف لو تبغى -->
+            <a class="btn primary" href="mailto:example@email.com?subject=Smart%20School%20Clinic%20Initiative">إرسال بريد</a>
+            <a class="btn" href="#" onclick="copyLink();return false;">نسخ رابط الموقع</a>
+          </div>
+
+          <div style="color:var(--muted2); font-size:12px; margin-top:2px">
+            * غيّر البريد داخل الكود (example@email.com) إلى بريدك الحقيقي.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div class="foot">
+        <div class="credit">© <span id="y"></span> — Smart School Clinic Initiative. All rights reserved.</div>
+        <div style="color:rgba(233,241,255,.45); font-size:12px">Built on GitHub Pages</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // السنة
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // نسخ الرابط
+    function copyLink(){
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(()=>{
+        alert("تم نسخ الرابط ✅");
+      }).catch(()=>{
+        prompt("انسخ الرابط يدويًا:", url);
+      });
+    }
+
+    // Reveal on scroll
+    const items = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('on');
+      });
+    }, {threshold: 0.12});
+    items.forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
