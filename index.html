@@ -829,3 +829,284 @@
   </script>
 </body>
 </html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العيادة المدرسية الذكية</title>
+  <meta name="description" content="منصة تعريفية احترافية لمبادرة العيادة المدرسية الذكية" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="container topbar__inner">
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">+</span>
+        <div class="brand__text">
+          <strong>العيادة المدرسية الذكية</strong>
+          <small>مبادرة وطنية للصحة الوقائية</small>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="التنقل">
+        <a href="#about">نبذة</a>
+        <a href="#why">المشكلة</a>
+        <a href="#solution">الحل</a>
+        <a href="#tech">التقنيات</a>
+        <a href="#demo">محاكاة</a>
+        <a class="btn btn--ghost" href="#contact">تواصل</a>
+      </nav>
+
+      <button class="menuBtn" id="menuBtn" aria-label="فتح القائمة">☰</button>
+    </div>
+
+    <div class="mobileNav" id="mobileNav" hidden>
+      <a href="#about">نبذة</a>
+      <a href="#why">المشكلة</a>
+      <a href="#solution">الحل</a>
+      <a href="#tech">التقنيات</a>
+      <a href="#demo">محاكاة</a>
+      <a href="#contact">تواصل</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__content">
+        <div class="pill">ريادة التحول الرقمي في الصحة الوقائية</div>
+        <h1>العيادة المدرسية <span class="accent">الذكية</span></h1>
+        <p>
+          تحويل المدرسة إلى نقطة ارتكاز صحية ذكية: فحص مبكر، متابعة فورية، ولوحة مؤشرات
+          تدعم قرار الطبيب والمرشد الصحي — بصورة قابلة للتوسع على مستوى المملكة.
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn" href="#demo">جرّب المحاكاة</a>
+          <a class="btn btn--ghost" href="#tech">استعرض التقنيات</a>
+        </div>
+
+        <div class="partners" aria-label="شركاء نجاح">
+          <span class="partners__title">شركاء النجاح والمنظومة</span>
+          <div class="partners__row">
+            <div class="partner">وزارة الصحة</div>
+            <div class="partner">وزارة التعليم</div>
+            <div class="partner">سدايا (SDAIA)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__card">
+        <!-- غيّر اسم الصورة حسب ملفك داخل الريبو -->
+        <img class="hero__img" src="العيادة المدرسية الذكية.png" alt="العيادة المدرسية الذكية" />
+        <div class="hero__badge">
+          <div>
+            <strong>إعداد وتطوير الفكرة</strong>
+            <div class="muted">أخصائي / عبد العزيز جميل الربيعي</div>
+            <div class="muted">الرعاية الصحية المنزلية — الطائف</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2>نبذة مختصرة</h2>
+      <p class="lead">
+        منصة تعريفية لمشروع “العيادة المدرسية الذكية” تشمل: المشكلة، الحل، التقنيات، ومحاكاة
+        لتجربة الفحص والتنبيه الطبي بشكل مبسط.
+      </p>
+
+      <div class="grid3">
+        <div class="card">
+          <h3>هدف المبادرة</h3>
+          <p>رفع جودة حياة الطلاب عبر الوقاية، والاكتشاف المبكر، والتدخل السريع.</p>
+        </div>
+        <div class="card">
+          <h3>نطاق التطبيق</h3>
+          <p>مدارس حكومية/أهلية — قابل للتوسع إلى شبكات مدارس ومناطق كاملة.</p>
+        </div>
+        <div class="card">
+          <h3>مخرجات قابلة للقياس</h3>
+          <p>مؤشرات فحص، معدلات تنبيه، تقارير متابعة، ولوحة مراقبة للإدارة الصحية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem -->
+  <section class="section section--alt" id="why">
+    <div class="container">
+      <h2>المشكلة</h2>
+      <div class="grid2">
+        <div class="card">
+          <h3>تأخر الاكتشاف</h3>
+          <p>تتأخر بعض الحالات حتى تظهر أعراض واضحة أو تصل للمستشفى.</p>
+        </div>
+        <div class="card">
+          <h3>تشتت البيانات</h3>
+          <p>بيانات الطالب الصحية غير موحدة، مما يضعف المتابعة والتنبؤ.</p>
+        </div>
+        <div class="card">
+          <h3>ضغط على العيادات</h3>
+          <p>الحالات البسيطة تزاحم الحرجة، دون تصنيف مبكر ذكي.</p>
+        </div>
+        <div class="card">
+          <h3>سلوكيات صحية غير مرصودة</h3>
+          <p>قلة مؤشرات واضحة للوقاية داخل المدرسة (النوم، النشاط، التغذية… إلخ).</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Solution -->
+  <section class="section" id="solution">
+    <div class="container">
+      <h2>الحل</h2>
+      <p class="lead">عيادة رقمية داخل المدرسة تجمع الفحص، التحليل، التنبيه، والمتابعة.</p>
+
+      <div class="timeline">
+        <div class="step">
+          <span class="step__num">1</span>
+          <div>
+            <h3>الدخول والتحقق</h3>
+            <p>كاميرا حرارية/تحقق سريع + تسجيل دخول للطالب (تصوري/تكاملي لاحقاً).</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num step__num--blue">2</span>
+          <div>
+            <h3>الفحص الذاتي</h3>
+            <p>قياس مؤشرات (نبض، حرارة، ضغط، أكسجين) وإرسالها تلقائياً.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num step__num--purple">3</span>
+          <div>
+            <h3>التحليل والتنبؤ</h3>
+            <p>مقارنة النتائج بالسجل التاريخي لإطلاق تنبيه مبكر.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num step__num--green">4</span>
+          <div>
+            <h3>القرار والمتابعة</h3>
+            <p>توصية فورية: سليم / يحتاج متابعة / حالة حرجة + إشعار للأهل/الجهات.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech -->
+  <section class="section section--alt" id="tech">
+    <div class="container">
+      <h2>تقنيات المستقبل في مدارسنا اليوم</h2>
+
+      <div class="grid3">
+        <article class="card techCard">
+          <div class="tag">IoT</div>
+          <img class="thumb" src="unnamed-4.png" alt="إنترنت الأشياء" />
+          <h3>إنترنت الأشياء</h3>
+          <p>أجهزة طبية متصلة لحظياً بالسحابة لنقل البيانات دون تدخل بشري.</p>
+        </article>
+
+        <article class="card techCard">
+          <div class="tag">AR</div>
+          <img class="thumb" src="unnamed-5.png" alt="الواقع المعزز" />
+          <h3>الواقع المعزز</h3>
+          <p>تمكين الطبيب من رؤية بيانات حيوية بشكل تفاعلي لرفع دقة التشخيص عن بُعد.</p>
+        </article>
+
+        <article class="card techCard">
+          <div class="tag">AI</div>
+          <img class="thumb" src="unnamed-6.png" alt="الذكاء الاصطناعي" />
+          <h3>التحليل والتنبؤ</h3>
+          <p>نماذج تحليل تقارن النتائج بالسجل الصحي وتستخرج إشارات الخطر مبكراً.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="section" id="demo">
+    <div class="container">
+      <h2>محاكاة سريعة</h2>
+      <p class="lead">هذه محاكاة توضيحية (Demo) لتجربة “سليم/خطر” + ملخص مؤشرات.</p>
+
+      <div class="demoGrid">
+        <div class="panel">
+          <h3>نتيجة الفحص</h3>
+          <div class="actions">
+            <button class="btn btn--good" id="btnSafe">فحص (حالة سليمة)</button>
+            <button class="btn btn--danger" id="btnRisk">محاكاة (خطر/حرارة)</button>
+          </div>
+
+          <div class="status" id="statusBox">
+            <div class="status__title">وضع الاستعداد</div>
+            <div class="status__desc muted">اضغط أحد الأزرار لعرض النتيجة.</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>مؤشرات حيوية</h3>
+          <div class="vitals">
+            <div class="vital">
+              <div class="vital__name">نبض القلب</div>
+              <div class="vital__val"><span id="hr">--</span> <small>bpm</small></div>
+            </div>
+            <div class="vital">
+              <div class="vital__name">درجة الحرارة</div>
+              <div class="vital__val"><span id="temp">--</span> <small>°C</small></div>
+            </div>
+            <div class="vital">
+              <div class="vital__name">ضغط الدم</div>
+              <div class="vital__val"><span id="bp">--</span> <small>mmHg</small></div>
+            </div>
+            <div class="vital">
+              <div class="vital__name">تشبع الأكسجين</div>
+              <div class="vital__val"><span id="spo2">--</span> <small>%</small></div>
+            </div>
+          </div>
+
+          <div class="note muted">
+            *القيم عشوائية للتوضيح فقط — ليست قياساً طبياً حقيقياً.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section--alt" id="contact">
+    <div class="container">
+      <h2>تواصل</h2>
+      <div class="card">
+        <p class="lead">إذا تبغاني أجهز لك نسخة “عرض لجنة تحكيم” داخل الموقع (صفحة Pitch + KPIs + Roadmap) قلّي ونسويها.</p>
+        <ul class="list">
+          <li><strong>الاسم:</strong> عبدالعزيز جميل الربيعي</li>
+          <li><strong>المجال:</strong> الرعاية الصحية المنزلية — الطائف</li>
+          <li><strong>المشروع:</strong> العيادة المدرسية الذكية</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div>Smart School Clinic Initiative © <span id="year"></span></div>
+      <div class="muted">All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
