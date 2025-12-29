@@ -2,194 +2,257 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>العيادة المدرسية الذكية - محاكاة MVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العيادة المدرسية الذكية | محاكاة MVP</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="logo">+</div>
-      <div class="brandText">
+      <span class="logo">+</span>
+      <div>
         <div class="title">العيادة المدرسية الذكية</div>
-        <div class="subtitle">محاكاة واقعية للـ MVP</div>
+        <div class="subtitle">محاكاة MVP — لوحة تحليل ومؤشرات لحظية</div>
       </div>
     </div>
 
     <nav class="nav">
-      <a href="#mvp">المحاكاة</a>
       <a href="#tech">التقنيات</a>
+      <a href="#mvp">المحاكاة</a>
+      <a href="#kpi">KPIs</a>
       <a href="#contact">التواصل</a>
     </nav>
   </header>
 
   <main class="container">
+    <!-- HERO -->
     <section class="hero">
-      <h1>تجربة فحص مدرسي “كأنها شغّالة في المدرسة”</h1>
-      <p>
-        هذه محاكاة توضيحية (Demo) وليست جهازًا طبيًا فعليًا. الهدف: عرض رحلة المستخدم + منطق النظام + واجهة تحكّم بشكل احترافي.
-      </p>
+      <div class="hero-card">
+        <h1>من بوابة المدرسة إلى قرار صحي خلال ثوانٍ</h1>
+        <p class="muted">
+          هذه محاكاة تفاعلية توضح فكرة “التوأم الرقمي الصحي” للطالب: قراءة مؤشرات، تحليل، توصية، وسجل إجراءات — بشكل قريب من الواقع.
+        </p>
 
-      <div class="heroActions">
-        <button id="startBtn" class="btn primary">بدء الفحص الآن</button>
-        <button id="resetBtn" class="btn ghost">إعادة تعيين</button>
-      </div>
-
-      <div class="statusRow">
-        <div class="pill" id="systemPill">
-          <span class="dot" id="systemDot"></span>
-          <span id="systemText">وضع الاستعداد</span>
+        <div class="hero-actions">
+          <a class="btn primary" href="#mvp">ابدأ المحاكاة الآن</a>
+          <a class="btn" href="#tech">شوف التقنيات</a>
         </div>
 
-        <div class="pill">
-          <span class="muted">Session:</span>
-          <strong id="sessionId">—</strong>
-        </div>
-
-        <div class="pill">
-          <span class="muted">الوقت:</span>
-          <strong id="clock">—</strong>
-        </div>
-      </div>
-    </section>
-
-    <section id="mvp" class="grid two">
-      <!-- LEFT: Live / Face -->
-      <div class="card">
-        <div class="cardHead">
-          <div>
-            <h2>التوأم الرقمي الصحي</h2>
-            <p class="muted">محاكاة كاميرا + تحقق + بناء “جلسة فحص”</p>
-          </div>
-
-          <div class="badgeLive">
-            <span class="cam">CAM_01</span>
-            <span class="live">LIVE</span>
-          </div>
-        </div>
-
-        <div class="liveBox">
-          <div class="liveOverlay">
-            <div class="liveLine"></div>
-            <div class="liveMeta">
-              <span id="faceState">بانتظار البدء…</span>
-              <span class="sep">•</span>
-              <span id="confidence">—%</span>
-            </div>
-          </div>
-
-          <!-- ضع صورتك/شعارك هنا لو تبي -->
-          <img id="faceImg" src="unnamed-2.png" alt="Live preview" />
-        </div>
-
-        <div class="actionsRow">
-          <button id="simulateNormal" class="btn success">فحص (حالة سليمة)</button>
-          <button id="simulateAlert" class="btn danger">محاكاة (خطر/حرارة)</button>
-        </div>
-
-        <div class="smallNote">
-          * المحاكاة تغيّر القيم وتعرض منطق القرار + رسائل النظام مثل الأجهزة الحقيقية.
+        <div class="partners">
+          <div class="partner">وزارة الصحة</div>
+          <div class="partner">وزارة التعليم</div>
+          <div class="partner">SDAIA</div>
         </div>
       </div>
 
-      <!-- RIGHT: Vitals + Result -->
-      <div class="card">
-        <div class="cardHead">
-          <div>
-            <h2>المؤشرات الحيوية</h2>
-            <p class="muted">قراءة لحظية + تحليل ذكاء اصطناعي + قرار</p>
-          </div>
-          <div class="chip" id="riskChip">—</div>
-        </div>
-
-        <div class="steps">
-          <div class="step" id="s1"><span>1</span> الدخول والتحقق</div>
-          <div class="step" id="s2"><span>2</span> الفحص الذاتي</div>
-          <div class="step" id="s3"><span>3</span> التحليل والتنبؤ</div>
-          <div class="step" id="s4"><span>4</span> القرار والإحالة</div>
-        </div>
-
-        <div class="metrics grid two">
-          <div class="metric">
-            <div class="metricTop">
-              <span class="icon">❤</span>
-              <span>نبض القلب</span>
+      <div class="hero-media">
+        <!-- غيّر اسم الصورة حسب ملفاتك -->
+        <img class="hero-img" src="العيادة المدرسية الذكية.png" alt="Smart School Clinic" onerror="this.style.display='none'">
+        <div class="media-fallback">
+          <div class="chip">LIVE</div>
+          <div class="screen">
+            <div class="screen-title">لوحة متابعة</div>
+            <div class="screen-grid">
+              <div class="mini">HR</div><div class="mini">Temp</div>
+              <div class="mini">BP</div><div class="mini">SpO2</div>
             </div>
-            <div class="metricVal"><span id="hr">--</span> <small>bpm</small></div>
-            <div class="metricBar"><div id="hrBar"></div></div>
           </div>
-
-          <div class="metric">
-            <div class="metricTop">
-              <span class="icon">🌡</span>
-              <span>درجة الحرارة</span>
-            </div>
-            <div class="metricVal"><span id="temp">--</span> <small>°C</small></div>
-            <div class="metricBar"><div id="tempBar"></div></div>
-          </div>
-
-          <div class="metric">
-            <div class="metricTop">
-              <span class="icon">🩸</span>
-              <span>ضغط الدم</span>
-            </div>
-            <div class="metricVal"><span id="bp">--/--</span> <small>mmHg</small></div>
-            <div class="metricBar"><div id="bpBar"></div></div>
-          </div>
-
-          <div class="metric">
-            <div class="metricTop">
-              <span class="icon">🫁</span>
-              <span>تشبع الأكسجين</span>
-            </div>
-            <div class="metricVal"><span id="spo2">--</span> <small>%</small></div>
-            <div class="metricBar"><div id="spo2Bar"></div></div>
-          </div>
-        </div>
-
-        <div class="resultBox" id="resultBox">
-          <div class="resultTitle" id="resultTitle">جاهز</div>
-          <div class="resultMsg" id="resultMsg">اضغط “بدء الفحص الآن” لتشغيل المحاكاة.</div>
-          <div class="resultActions">
-            <button id="downloadBtn" class="btn">توليد تقرير (PDF لاحقًا)</button>
-            <button id="shareBtn" class="btn ghost">نسخ ملخص</button>
-          </div>
-        </div>
-
-        <div class="logs">
-          <div class="logsHead">
-            <strong>سجل النظام</strong>
-            <span class="muted" id="logHint">—</span>
-          </div>
-          <div id="logArea" class="logArea"></div>
         </div>
       </div>
     </section>
 
-    <section id="tech" class="card wide">
-      <h2>هيكلة الأقسام (جاهزة للتوسع)</h2>
-      <div class="grid three">
-        <div class="mini">
-          <h3>واجهة ولي الأمر/الطالب</h3>
-          <p class="muted">تجربة فحص + موافقة + عرض نتيجة مبسطة.</p>
+    <!-- TECH -->
+    <section id="tech" class="section">
+      <div class="section-head">
+        <h2>تقنيات المستقبل في مدارسنا اليوم</h2>
+        <p class="muted">واجهة عرض “مفهومة” للجنة التحكيم: كل تقنية مرتبطة بأثر واضح.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card">
+          <div class="card-img">
+            <img src="unnamed-2.png" alt="IoT" onerror="this.remove()">
+          </div>
+          <h3>إنترنت الأشياء (IoT)</h3>
+          <p>أجهزة طبية متصلة لحظيًا تنقل البيانات دون تدخل بشري لتقليل الأخطاء.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-img">
+            <img src="unnamed-3.png" alt="AR" onerror="this.remove()">
+          </div>
+          <h3>الواقع المعزز (AR)</h3>
+          <p>عرض المؤشرات والإرشادات بشكل فوري لدعم القرار الطبي.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-img">
+            <img src="unnamed-4.png" alt="AI" onerror="this.remove()">
+          </div>
+          <h3>التحليل والتنبؤ</h3>
+          <p>مقارنة المؤشرات بالسجل الصحي وإخراج توصية وتصنيف مستوى المخاطر.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- MVP -->
+    <section id="mvp" class="section">
+      <div class="section-head">
+        <h2>المحاكاة | MVP</h2>
+        <p class="muted">اختر طالب، ثم جرّب “سليم” أو “خطر” وشاهد المؤشرات والتحليل لحظيًا.</p>
+      </div>
+
+      <div class="mvp-grid">
+        <!-- Student -->
+        <aside class="panel">
+          <div class="panel-head">
+            <h3>هوية الطالب</h3>
+            <span class="pill" id="studentStatus">جاهز</span>
+          </div>
+
+          <div class="student">
+            <img id="studentImg" class="avatar" src="unnamed-5.png" alt="student"
+                 onerror="this.src='data:image/svg+xml;charset=utf-8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23212b3a%22/><text x=%2250%25%22 y=%2255%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%238aa3c7%22 font-size=%2216%22>طالب</text></svg>';">
+            <div class="student-meta">
+              <div class="name" id="studentName">طالب افتراضي</div>
+              <div class="muted" id="studentInfo">المرحلة: متوسط — الصف: 2</div>
+            </div>
+          </div>
+
+          <label class="field">
+            <span>اختر طالب</span>
+            <select id="studentSelect">
+              <option value="0">سلمان (متوسط | 2)</option>
+              <option value="1">محمد (ابتدائي | 5)</option>
+              <option value="2">فهد (ثانوي | 1)</option>
+            </select>
+          </label>
+
+          <div class="actions">
+            <button class="btn good" id="btnNormal">فحص حالة سليمة ✓</button>
+            <button class="btn danger" id="btnRisk">محاكاة (خطر/حرارة) ⚠</button>
+          </div>
+
+          <div class="note">
+            <div class="note-title">ملاحظة مهمة</div>
+            <div class="muted">هذه محاكاة عرض للجنة التحكيم. لا تستخدم كتشخيص طبي حقيقي.</div>
+          </div>
+        </aside>
+
+        <!-- Vitals -->
+        <section class="panel">
+          <div class="panel-head">
+            <h3>المؤشرات الحيوية (لحظي)</h3>
+            <span class="pill" id="liveBadge">LIVE</span>
+          </div>
+
+          <div class="vitals">
+            <div class="vital">
+              <div class="vital-title">نبض القلب</div>
+              <div class="vital-value"><span id="hr">--</span> <small>bpm</small></div>
+              <div class="vital-bar"><div id="hrBar"></div></div>
+            </div>
+
+            <div class="vital">
+              <div class="vital-title">درجة الحرارة</div>
+              <div class="vital-value"><span id="temp">--</span> <small>°C</small></div>
+              <div class="vital-bar"><div id="tempBar"></div></div>
+            </div>
+
+            <div class="vital">
+              <div class="vital-title">ضغط الدم</div>
+              <div class="vital-value"><span id="bp">--</span> <small>mmHg</small></div>
+              <div class="vital-bar"><div id="bpBar"></div></div>
+            </div>
+
+            <div class="vital">
+              <div class="vital-title">تشبع الأكسجين</div>
+              <div class="vital-value"><span id="spo2">--</span> <small>%</small></div>
+              <div class="vital-bar"><div id="spo2Bar"></div></div>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-title">مخطط نبض (آخر 30 قراءة)</div>
+            <canvas id="hrChart" width="900" height="180"></canvas>
+          </div>
+        </section>
+
+        <!-- AI -->
+        <section class="panel">
+          <div class="panel-head">
+            <h3>تحليل الذكاء الاصطناعي</h3>
+            <span class="pill" id="aiState">بانتظار البيانات…</span>
+          </div>
+
+          <div class="ai">
+            <ul class="ai-list" id="aiList">
+              <li>النظام جاهز…</li>
+              <li>بانتظار بيانات المستشعرات…</li>
+            </ul>
+
+            <div class="ai-actions">
+              <button class="btn primary" id="btnPrepare">وضع الاستعداد</button>
+              <button class="btn" id="btnExport">تصدير تقرير (محاكاة)</button>
+            </div>
+          </div>
+
+          <div class="logs">
+            <div class="logs-head">سجل الإجراءات</div>
+            <div id="logBox" class="logBox"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- KPI -->
+    <section id="kpi" class="section">
+      <div class="section-head">
+        <h2>KPIs + خارطة طريق</h2>
+        <p class="muted">للجنة: أرقام واضحة + خطوات تنفيذ.</p>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-item"><div class="kpi-num">-30%</div><div class="kpi-label">وقت فرز الحالات</div></div>
+        <div class="kpi-item"><div class="kpi-num">-40%</div><div class="kpi-label">أخطاء الإدخال اليدوي</div></div>
+        <div class="kpi-item"><div class="kpi-num">+25%</div><div class="kpi-label">الالتزام بالمتابعة</div></div>
+        <div class="kpi-item"><div class="kpi-num">90 يوم</div><div class="kpi-label">تجربة ميدانية</div></div>
+      </div>
+
+      <div class="roadmap">
+        <div class="step"><span>1</span> MVP محاكاة + واجهة لجنة</div>
+        <div class="step"><span>2</span> ربط أجهزة (IoT) تجريبي</div>
+        <div class="step"><span>3</span> خوارزمية فرز + تنبيهات</div>
+        <div class="step"><span>4</span> تكامل منصة/هوية (حسب الجهة)</div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="section-head">
+        <h2>التواصل</h2>
+        <p class="muted">اكتب بياناتك هنا لاحقًا، أو خلّني أصيغها لك بصيغة رسمية.</p>
+      </div>
+
+      <div class="contact">
+        <div class="contact-card">
+          <div class="contact-title">إعداد وتطوير الفكرة</div>
+          <div class="contact-name">عبدالعزيز جميل الربيعي</div>
+          <div class="muted">الرعاية الصحية المنزلية — الطائف</div>
         </div>
-        <div class="mini">
-          <h3>لوحة المدرسة</h3>
-          <p class="muted">قائمة حالات + تنبيهات + تقارير يومية.</p>
-        </div>
-        <div class="mini">
-          <h3>تكاملات وطنية</h3>
-          <p class="muted">نموذج ربط (نفاذ/صحتي/… ) كبوابة مستقبلية.</p>
+        <div class="contact-card">
+          <div class="contact-title">ملاحظة للجنة</div>
+          <div class="muted">
+            هذه صفحة عرض + محاكاة. عند التنفيذ الحقيقي يتم ربط الأجهزة والسجل الصحي والتقارير حسب لوائح الجهة.
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="card wide">
-      <h2>التواصل</h2>
-      <p class="muted">ضع بياناتك هنا (اسم/إيميل/لينكدإن) + سطر “جاهز للتجربة Pilot”.</p>
-      <div class="footerLine">© 2025 Smart School Clinic Initiative</div>
-    </section>
+    <footer class="footer">
+      <div>Smart School Clinic Initiative © <span id="year"></span> — جميع الحقوق محفوظة</div>
+    </footer>
   </main>
 
   <script src="app.js"></script>
