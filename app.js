@@ -1,45 +1,104 @@
-const yearEl = document.getElementById("year");
-yearEl.textContent = new Date().getFullYear();
+// ===== Helpers
+const $ = (q) => document.querySelector(q);
+const $$ = (q) => Array.from(document.querySelectorAll(q));
 
-const menuBtn = document.getElementById("menuBtn");
-const mobileNav = document.getElementById("mobileNav");
-menuBtn?.addEventListener("click", () => {
-  const isHidden = mobileNav.hasAttribute("hidden");
-  if (isHidden) mobileNav.removeAttribute("hidden");
-  else mobileNav.setAttribute("hidden", "");
+const setText = (id, value) => { $(id).textContent = value; };
+
+const modal = $("#modal");
+const statusChip = $("#statusChip");
+const statusDesc = $("#statusDesc");
+const noticeDot = $(".notice__dot");
+const noticeText = $("#noticeText");
+
+function openModal(title, desc, kind) {
+  $("#modalTitle").textContent = title;
+  statusDesc.textContent = desc;
+
+  statusChip.className = "status " + (kind === "bad" ? "bad" : "good");
+  statusChip.textContent = kind === "bad" ? "خطر" : "سليمة";
+
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+$$("[data-close='1']").forEach(el => el.addEventListener("click", closeModal));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+// ===== Year
+const y = new Date().getFullYear();
+$("#year").textContent = y;
+$("#year2").textContent = y;
+
+// ===== Active nav (highlight section)
+const sections = ["#about","#journey","#tech","#simulation","#kpis","#contact"].map(id => $(id));
+const navLinks = $$(".nav__link");
+
+const io = new IntersectionObserver((entries) => {
+  const visible = entries
+    .filter(e => e.isIntersecting)
+    .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (!visible) return;
+
+  const id = "#" + visible.target.id;
+  navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === id));
+}, { threshold: [0.2, 0.35, 0.5] });
+
+sections.forEach(s => s && io.observe(s));
+
+// ===== Simulation modes
+const state = {
+  mode: "idle", // idle | normal | fever
+};
+
+function setNotice(text, color) {
+  noticeText.textContent = text;
+  noticeDot.style.background = color || "rgba(255,255,255,.4)";
+  if (color) noticeDot.style.boxShadow = `0 0 18px ${color}`;
+  else noticeDot.style.boxShadow = "none";
+}
+
+function setVitals({ hr, temp, bp, spo2 }) {
+  setText("#hr", hr);
+  setText("#temp", temp);
+  setText("#bp", bp);
+  setText("#spo2", spo2);
+}
+
+function readyMode() {
+  state.mode = "idle";
+  setVitals({ hr:"— —", temp:"— —", bp:"— —", spo2:"— —" });
+  setNotice("وضع الاستعداد… بانتظار بيانات", "rgba(255,255,255,.55)");
+}
+
+function normalMode() {
+  state.mode = "normal";
+  setVitals({ hr:"78", temp:"36.8", bp:"118/76", spo2:"98" });
+  setNotice("الحالة سليمة ✅", "rgba(34,197,94,.85)");
+  openModal("نتيجة الفحص", "المؤشرات ضمن المعدلات الطبيعية. لا يوجد إنذار حالياً.", "good");
+}
+
+function feverMode() {
+  state.mode = "fever";
+  setVitals({ hr:"112", temp:"39.4", bp:"132/84", spo2:"95" });
+  setNotice("تنبيه: اشتباه حرارة مرتفعة ⚠️", "rgba(239,68,68,.85)");
+  openModal("تنبيه حالة حرجة", "رُصدت حرارة مرتفعة مع تسارع نبض. يُوصى بالتقييم الفوري وإشعار المسؤول الصحي.", "bad");
+}
+
+$("#btnReady").addEventListener("click", readyMode);
+$("#btnNormal").addEventListener("click", normalMode);
+$("#btnFever").addEventListener("click", feverMode);
+
+// ===== Contact (demo only)
+$("#contactForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  openModal("تم الاستلام", "وصلت رسالتك (تجريبي). إذا تبي ربط إرسال فعلي ببريد/Google Form أعطيك الطريقة.", "good");
+  e.target.reset();
 });
 
-const statusBox = document.getElementById("statusBox");
-const hr = document.getElementById("hr");
-const temp = document.getElementById("temp");
-const bp = document.getElementById("bp");
-const spo2 = document.getElementById("spo2");
-
-function rand(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function setStatus(type) {
-  statusBox.classList.remove("status--good", "status--risk");
-
-  if (type === "safe") {
-    statusBox.classList.add("status--good");
-    statusBox.querySelector(".status__title").textContent = "حالة سليمة ✅";
-    statusBox.querySelector(".status__desc").textContent = "لا توجد مؤشرات خطر حالياً. يُنصح بالمتابعة الروتينية.";
-    hr.textContent = rand(70, 92);
-    temp.textContent = (rand(362, 370) / 10).toFixed(1);
-    bp.textContent = `${rand(105, 120)}/${rand(65, 80)}`;
-    spo2.textContent = rand(96, 99);
-  } else {
-    statusBox.classList.add("status--risk");
-    statusBox.querySelector(".status__title").textContent = "تنبيه خطر (حرارة) ⚠️";
-    statusBox.querySelector(".status__desc").textContent = "تم رصد حرارة مرتفعة. يُنصح بالعزل المؤقت وإبلاغ المرشد/الأهل وإعادة القياس.";
-    hr.textContent = rand(95, 120);
-    temp.textContent = (rand(381, 395) / 10).toFixed(1);
-    bp.textContent = `${rand(115, 135)}/${rand(70, 88)}`;
-    spo2.textContent = rand(92, 96);
-  }
-}
-
-document.getElementById("btnSafe")?.addEventListener("click", () => setStatus("safe"));
-document.getElementById("btnRisk")?.addEventListener("click", () => setStatus("risk"));
+// init
+readyMode();
