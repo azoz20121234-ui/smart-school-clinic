@@ -1,261 +1,331 @@
-const $ = (s) => document.querySelector(s);
-const $$ = (s) => Array.from(document.querySelectorAll(s));
-
-const yearEl = $("#year");
-yearEl.textContent = new Date().getFullYear();
-
-const tabs = $$(".tab");
-const panels = {
-  sim: $("#tab-sim"),
-  tech: $("#tab-tech"),
-  kpi: $("#tab-kpi"),
-  contact: $("#tab-contact"),
+// ====== Simple MVP State (LocalStorage) ======
+const LS = {
+  users: "ssc_users",
+  session: "ssc_session",
+  cases: "ssc_cases",
+  results: "ssc_results"
 };
 
-tabs.forEach(btn => {
-  btn.addEventListener("click", () => {
-    tabs.forEach(x => x.classList.remove("active"));
-    btn.classList.add("active");
-    Object.values(panels).forEach(p => p.classList.remove("show"));
-    panels[btn.dataset.tab].classList.add("show");
+const $ = (q) => document.querySelector(q);
+const $$ = (q) => [...document.querySelectorAll(q)];
+
+function nowTime(){
+  const d = new Date();
+  return d.toLocaleString("ar-SA");
+}
+
+function seedData(){
+  const users = [
+    { username:"admin", password:"1234", role:"school", name:"منسق المدرسة" },
+    { username:"dr", password:"1234", role:"doctor", name:"د. سراج (تجريبي)" },
+    { username:"parent", password:"1234", role:"parent", name:"ولي أمر محمد" }
+  ];
+  localStorage.setItem(LS.users, JSON.stringify(users));
+
+  const cases = [
+    { id: "C-1001", student:"محمد / صف 6", reason:"fever", status:"new", createdAt: nowTime() },
+    { id: "C-1002", student:"سارة / صف 4", reason:"injury", status:"new", createdAt: nowTime() }
+  ];
+  localStorage.setItem(LS.cases, JSON.stringify(cases));
+  localStorage.setItem(LS.results, JSON.stringify({}));
+  alert("تم تجهيز بيانات تجريبية ✅");
+  renderAll();
+}
+
+function getUsers(){
+  return JSON.parse(localStorage.getItem(LS.users) || "[]");
+}
+function getCases(){
+  return JSON.parse(localStorage.getItem(LS.cases) || "[]");
+}
+function setCases(cases){
+  localStorage.setItem(LS.cases, JSON.stringify(cases));
+}
+function getResults(){
+  return JSON.parse(localStorage.getItem(LS.results) || "{}");
+}
+function setResults(obj){
+  localStorage.setItem(LS.results, JSON.stringify(obj));
+}
+function getSession(){
+  return JSON.parse(localStorage.getItem(LS.session) || "null");
+}
+function setSession(s){
+  localStorage.setItem(LS.session, JSON.stringify(s));
+}
+function clearSession(){
+  localStorage.removeItem(LS.session);
+}
+
+// ====== Navigation ======
+function showView(key){
+  $$(".view").forEach(v => v.classList.add("hidden"));
+  $(`#view-${key}`).classList.remove("hidden");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function wireNav(){
+  $$("[data-nav]").forEach(btn=>{
+    btn.addEventListener("click", ()=> showView(btn.dataset.nav));
   });
-});
 
-const steps = $$("#steps li");
-function setStep(activeIndex){
-  steps.forEach((li,i)=>{
-    li.classList.remove("active");
-    if(i < activeIndex) li.classList.add("done");
-    else li.classList.remove("done");
+  $("#btnGoDemo").addEventListener("click", ()=> showView("demo"));
+  $("#btnStartNow").addEventListener("click", ()=> showView("demo"));
+  $("#btnTour").addEventListener("click", ()=> showView("features"));
+
+  $("#btnSeed").addEventListener("click", seedData);
+}
+
+// ====== Role-based Dashboard ======
+function hideAllDash(){
+  $("#dash-school").classList.add("hidden");
+  $("#dash-doctor").classList.add("hidden");
+  $("#dash-parent").classList.add("hidden");
+  $("#dash-empty").classList.add("hidden");
+}
+
+function showDashByRole(role){
+  hideAllDash();
+  if(role === "school") $("#dash-school").classList.remove("hidden");
+  else if(role === "doctor") $("#dash-doctor").classList.remove("hidden");
+  else if(role === "parent") $("#dash-parent").classList.remove("hidden");
+  else $("#dash-empty").classList.remove("hidden");
+}
+
+// ====== Rendering Lists ======
+function reasonLabel(r){
+  const map = {
+    fever: "اشتباه حرارة",
+    injury: "إصابة بسيطة",
+    asthma: "أعراض تنفسية",
+    other: "أخرى"
+  };
+  return map[r] || r;
+}
+
+function renderSchool(){
+  const list = $("#schoolCases");
+  if(!list) return;
+  const cases = getCases();
+  list.innerHTML = "";
+  cases.slice().reverse().forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "listItem";
+    el.innerHTML = `
+      <div>
+        <strong>${c.id}</strong>
+        <small>${c.student} — ${reasonLabel(c.reason)} — ${c.createdAt}</small>
+      </div>
+      <span class="badge ${c.status==="new"?"warn":(c.status==="closed"?"ok":"info")}">
+        ${c.status==="new"?"جديدة":(c.status==="closed"?"مغلقة":"قيد المعالجة")}
+      </span>
+    `;
+    list.appendChild(el);
   });
-  if(steps[activeIndex]) steps[activeIndex].classList.add("active");
 }
 
-const pillOk = $("#pillOk");
-const pillWarn = $("#pillWarn");
-const pillDanger = $("#pillDanger");
+function renderDoctor(){
+  const list = $("#doctorCases");
+  if(!list) return;
 
-function setPills(mode){
-  [pillOk, pillWarn, pillDanger].forEach(p => p.classList.remove("on"));
-  if(mode === "ok") pillOk.classList.add("on");
-  if(mode === "warn") pillWarn.classList.add("on");
-  if(mode === "danger") pillDanger.classList.add("on");
-}
+  const cases = getCases().filter(c=> c.status !== "closed");
+  list.innerHTML = "";
 
-const scenarioChip = $("#scenarioChip");
-const sysState = $("#sysState");
-const sysHint = $("#sysHint");
-const progressBar = $("#progressBar");
-const triageLabel = $("#triageLabel");
-const triageReason = $("#triageReason");
-const recommendation = $("#recommendation");
-
-const hr = $("#hr");
-const temp = $("#temp");
-const bp = $("#bp");
-const spo2 = $("#spo2");
-
-const hrSpark = $("#hrSpark");
-const tempSpark = $("#tempSpark");
-const bpSpark = $("#bpSpark");
-const spo2Spark = $("#spo2Spark");
-
-const logEl = $("#log");
-
-function log(msg){
-  const time = new Date().toLocaleTimeString("ar-SA", {hour:"2-digit", minute:"2-digit"});
-  const line = document.createElement("div");
-  line.innerHTML = `<b>${time}</b> — ${msg}`;
-  logEl.prepend(line);
-}
-
-function setProgress(p){
-  progressBar.style.width = `${p}%`;
-}
-
-function rnd(min, max){
-  return Math.round((min + Math.random()*(max-min))*10)/10;
-}
-
-function setVitalValues(v){
-  hr.textContent = v.hr ?? "--";
-  temp.textContent = v.temp ?? "--";
-  bp.textContent = v.bp ?? "--";
-  spo2.textContent = v.spo2 ?? "--";
-
-  hrSpark.style.width = `${Math.min(95, Math.max(25, (v.hr-50))) }%`;
-  tempSpark.style.width = `${Math.min(95, Math.max(25, (v.temp-35)*40)) }%`;
-  bpSpark.style.width = `${Math.min(95, Math.max(25, (parseInt(v.bp?.split("/")[0]||"0",10)-90))) }%`;
-  spo2Spark.style.width = `${Math.min(95, Math.max(25, (v.spo2-80)*5)) }%`;
-}
-
-const scenarios = {
-  ok: {
-    name: "حالة سليمة",
-    triage: "سليمة ✅",
-    reason: "المؤشرات ضمن النطاق الطبيعي ولا توجد علامات خطر.",
-    rec: "إكمال اليوم الدراسي + نصائح وقائية",
-    gen: () => ({
-      hr: Math.round(rnd(70, 95)),
-      temp: rnd(36.4, 37.1),
-      bp: `${Math.round(rnd(98,112))}/${Math.round(rnd(60,74))}`,
-      spo2: Math.round(rnd(96, 99))
-    })
-  },
-  warn: {
-    name: "ملاحظة",
-    triage: "ملاحظة 🟡",
-    reason: "ارتفاع بسيط/عرض خفيف يحتاج متابعة خلال 30–60 دقيقة.",
-    rec: "إعادة القياس + إشعار المرشد الصحي/ولي الأمر عند اللزوم",
-    gen: () => ({
-      hr: Math.round(rnd(95, 115)),
-      temp: rnd(37.2, 38.0),
-      bp: `${Math.round(rnd(110,124))}/${Math.round(rnd(70,82))}`,
-      spo2: Math.round(rnd(94, 96))
-    })
-  },
-  danger: {
-    name: "خطر",
-    triage: "خطر 🔴",
-    reason: "علامات خطر محتملة (حرارة مرتفعة/تشبع منخفض/نبض عالي).",
-    rec: "إحالة فورية للعيادة/الطوارئ + إشعار ولي الأمر",
-    gen: () => ({
-      hr: Math.round(rnd(120, 145)),
-      temp: rnd(38.2, 40.0),
-      bp: `${Math.round(rnd(130,150))}/${Math.round(rnd(85,98))}`,
-      spo2: Math.round(rnd(88, 93))
-    })
+  if(cases.length === 0){
+    list.innerHTML = `<div class="muted">لا توجد طلبات الآن.</div>`;
+    return;
   }
-};
 
-let running = false;
-let intervalId = null;
-let mode = "ok";
-
-function setMode(m){
-  mode = m;
-  setPills(m);
-  scenarioChip.textContent = scenarios[m].name;
-  scenarioChip.style.borderColor = m==="ok" ? "rgba(34,197,94,.45)" :
-                                 m==="warn"? "rgba(245,158,11,.45)" :
-                                             "rgba(239,68,68,.45)";
-  log(`تم اختيار سيناريو: <b>${scenarios[m].name}</b>`);
-}
-
-function stopSim(){
-  running = false;
-  if(intervalId) clearInterval(intervalId);
-  intervalId = null;
-  sysState.textContent = "وضع الاستعداد";
-  sysHint.textContent = "اضغط “بدء الفحص” لتشغيل المحاكاة.";
-  setProgress(0);
-  setStep(0);
-  triageLabel.textContent = "—";
-  triageReason.textContent = "بانتظار البيانات…";
-  recommendation.textContent = "—";
-  setVitalValues({hr:"--", temp:"--", bp:"--", spo2:"--"});
-  setPills("ok"); // default visual
-  log("تمت إعادة ضبط المحاكاة.");
-}
-
-async function runSim(){
-  if(running) return;
-  running = true;
-  log("بدء الفحص…");
-
-  // Step 1
-  setStep(0);
-  sysState.textContent = "الدخول والتحقق";
-  sysHint.textContent = "التحقق من الهوية وفتح سجل الطالب…";
-  setProgress(15);
-  await sleep(650);
-  log("تم التحقق من الهوية (محاكاة).");
-
-  // Step 2
-  setStep(1);
-  sysState.textContent = "الفحص الذاتي";
-  sysHint.textContent = "جمع المؤشرات الحيوية من أجهزة القياس…";
-  setProgress(45);
-  await sleep(650);
-  log("يتم التقاط المؤشرات (نبض/حرارة/ضغط/SpO2)…");
-
-  // Live stream vitals
-  if(intervalId) clearInterval(intervalId);
-  intervalId = setInterval(() => {
-    const v = scenarios[mode].gen();
-    setVitalValues(v);
-  }, 800);
-
-  await sleep(1600);
-
-  // Step 3
-  setStep(2);
-  sysState.textContent = "تحليل الذكاء الاصطناعي";
-  sysHint.textContent = "تحليل البيانات + مقارنة بالسجل الصحي…";
-  setProgress(75);
-  log("بدء التحليل (AI)…");
-  await sleep(1100);
-
-  // Result
-  triageLabel.textContent = scenarios[mode].triage;
-  triageReason.textContent = scenarios[mode].reason;
-  recommendation.textContent = scenarios[mode].rec;
-
-  // Step 4
-  setStep(3);
-  sysState.textContent = "القرار والإحالة";
-  sysHint.textContent = "إصدار توصية + تسجيل الحدث + إشعار الجهات…";
-  setProgress(100);
-  log(`النتيجة: <b>${scenarios[mode].triage}</b> — ${scenarios[mode].reason}`);
-  log(`التوصية: <b>${scenarios[mode].rec}</b>`);
-
-  // keep vitals running (realistic live)
-}
-
-function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
-
-$("#btnStart").addEventListener("click", () => runSim());
-$("#btnReset").addEventListener("click", () => stopSim());
-
-$$(".controls [data-sim]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    setMode(btn.dataset.sim);
-    // if already running, update result text quickly
-    if(running){
-      triageLabel.textContent = scenarios[mode].triage;
-      triageReason.textContent = scenarios[mode].reason;
-      recommendation.textContent = scenarios[mode].rec;
-    }
+  cases.slice().reverse().forEach(c=>{
+    const el = document.createElement("div");
+    el.className = "listItem";
+    el.innerHTML = `
+      <div>
+        <strong>${c.id}</strong>
+        <small>${c.student} — ${reasonLabel(c.reason)} — ${c.createdAt}</small>
+      </div>
+      <button class="btnGhost" data-pick="${c.id}">اختيار</button>
+    `;
+    list.appendChild(el);
   });
-});
 
-$("#btnExport").addEventListener("click", async () => {
-  const report =
-`تقرير محاكاة — العيادة المدرسية الذكية
------------------------------------
-السيناريو: ${scenarios[mode].name}
-الحالة: ${triageLabel.textContent}
-السبب: ${triageReason.textContent}
-التوصية: ${recommendation.textContent}
+  $$("[data-pick]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const id = b.dataset.pick;
+      localStorage.setItem("ssc_active_case", id);
+      alert(`تم اختيار الحالة ${id} ✅`);
+    });
+  });
+}
 
-القياسات الحالية:
-- نبض: ${hr.textContent} bpm
-- حرارة: ${temp.textContent} °C
-- ضغط: ${bp.textContent} mmHg
-- SpO2: ${spo2.textContent} %
+function renderParent(){
+  const alertBox = $("#parentAlert");
+  const resultBox = $("#parentResult");
+  if(!alertBox || !resultBox) return;
 
-ملاحظة: هذا تقرير عرض (Demo) قابل للتحويل إلى MVP متصل بواجهة API.`;
+  const cases = getCases();
+  const last = cases.slice().reverse()[0];
 
+  if(last){
+    alertBox.innerHTML = `
+      <div><strong>تنبيه:</strong> تم إنشاء طلب استشارة</div>
+      <div class="muted">${last.student} — السبب: ${reasonLabel(last.reason)} — ${last.createdAt}</div>
+      <div style="margin-top:10px">
+        <span class="badge warn">بانتظار الطبيب</span>
+      </div>
+    `;
+  }
+
+  const results = getResults();
+  const activeClosed = cases.slice().reverse().find(c=> c.status==="closed");
+  if(activeClosed && results[activeClosed.id]){
+    resultBox.textContent = results[activeClosed.id];
+    alertBox.innerHTML = `
+      <div><strong>تمت الاستشارة ✅</strong></div>
+      <div class="muted">${activeClosed.student} — ${activeClosed.createdAt}</div>
+      <div style="margin-top:10px">
+        <span class="badge ok">تم إرسال توصية</span>
+      </div>
+    `;
+  } else {
+    resultBox.textContent = "—";
+  }
+}
+
+function renderAll(){
+  renderSchool();
+  renderDoctor();
+  renderParent();
+}
+
+// ====== Auth ======
+function login(){
+  const role = $("#role").value;
+  const username = $("#username").value.trim();
+  const password = $("#password").value;
+
+  const users = getUsers();
+  const u = users.find(x => x.username===username && x.password===password && x.role===role);
+
+  if(!u){
+    alert("بيانات الدخول غير صحيحة. جرّب الحسابات الجاهزة.");
+    return;
+  }
+
+  setSession({ username:u.username, role:u.role, name:u.name, at: nowTime() });
+  alert(`هلا ${u.name} 👋 تم الدخول بنجاح`);
+  applySessionUI();
+}
+
+function logout(){
+  clearSession();
+  localStorage.removeItem("ssc_active_case");
+  alert("تم تسجيل الخروج.");
+  applySessionUI();
+}
+
+// ====== Doctor Actions ======
+function createCase(){
+  const student = $("#schoolStudent").value.trim() || "طالب غير محدد";
+  const reason = $("#schoolReason").value;
+
+  const id = "C-" + Math.floor(1000 + Math.random()*9000);
+  const cases = getCases();
+  cases.push({ id, student, reason, status:"new", createdAt: nowTime() });
+  setCases(cases);
+
+  $("#schoolStudent").value = "";
+  alert(`تم إرسال الحالة ${id} للطبيب ✅`);
+  renderAll();
+}
+
+function closeCase(){
+  const activeId = localStorage.getItem("ssc_active_case");
+  if(!activeId){
+    alert("اختر حالة أولاً من قائمة الطلبات.");
+    return;
+  }
+  const note = $("#doctorNote").value.trim();
+  if(!note){
+    alert("اكتب ملخص الطبيب قبل الإغلاق.");
+    return;
+  }
+
+  const cases = getCases();
+  const idx = cases.findIndex(c=> c.id===activeId);
+  if(idx === -1){
+    alert("الحالة غير موجودة.");
+    return;
+  }
+  cases[idx].status = "closed";
+  setCases(cases);
+
+  const results = getResults();
+  results[activeId] = note;
+  setResults(results);
+
+  $("#doctorNote").value = "";
+  localStorage.removeItem("ssc_active_case");
+  alert(`تم إغلاق الحالة ${activeId} وإرسال التوصية ✅`);
+  renderAll();
+}
+
+// ====== Video (Local camera preview for MVP demo) ======
+let mediaStream = null;
+
+async function startCam(){
   try{
-    await navigator.clipboard.writeText(report);
-    log("✅ تم نسخ التقرير إلى الحافظة.");
-  }catch{
-    log("⚠️ لم أستطع النسخ تلقائيًا (قيود المتصفح). انسخ يدويًا من الكونسول.");
-    console.log(report);
+    mediaStream = await navigator.mediaDevices.getUserMedia({ video:true, audio:true });
+    $("#localVideo").srcObject = mediaStream;
+  }catch(e){
+    console.error(e);
+    alert("تعذر تشغيل الكاميرا. تأكد من صلاحيات المتصفح.");
   }
-});
+}
 
-// init
-log("جاهز. اختر سيناريو ثم ابدأ الفحص.");
-setMode("ok");
-setPills("ok");
+function endCam(){
+  if(mediaStream){
+    mediaStream.getTracks().forEach(t=> t.stop());
+    mediaStream = null;
+  }
+  const v = $("#localVideo");
+  if(v) v.srcObject = null;
+}
+
+// ====== Apply Session ======
+function applySessionUI(){
+  const s = getSession();
+  if(!s){
+    showDashByRole(null);
+    return;
+  }
+  showDashByRole(s.role);
+  renderAll();
+}
+
+// ====== Init ======
+function wireActions(){
+  $("#btnLogin").addEventListener("click", login);
+  $("#btnLogout").addEventListener("click", logout);
+
+  const btnCreate = $("#btnCreateCase");
+  if(btnCreate) btnCreate.addEventListener("click", createCase);
+
+  const btnClose = $("#btnCloseCase");
+  if(btnClose) btnClose.addEventListener("click", closeCase);
+
+  const btnCam = $("#btnStartCam");
+  if(btnCam) btnCam.addEventListener("click", startCam);
+
+  const btnEnd = $("#btnEndCam");
+  if(btnEnd) btnEnd.addEventListener("click", endCam);
+
+  $("#year").textContent = new Date().getFullYear();
+}
+
+document.addEventListener("DOMContentLoaded", ()=>{
+  wireNav();
+  wireActions();
+  applySessionUI();
+  renderAll();
+});
