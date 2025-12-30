@@ -480,3 +480,111 @@ function init(){
 }
 
 init();
+(function(){
+  const KEY = "ssc_state_v1";
+  const ROLE_KEY = "ssc_role_v1";
+
+  const seed = () => ({
+    visits: [
+      {id:"V-101", student:"محمد", grade:"سادس", time:"10:05", status:"مكتمل"},
+      {id:"V-102", student:"سارة", grade:"خامس", time:"10:18", status:"قيد المتابعة"},
+    ],
+    tickets: [
+      {id:"T-9001", student:"محمد", issue:"صداع + حرارة", severity:"متوسط", parentStatus:"بانتظار", doctorStatus:"جديد", note:""},
+      {id:"T-9002", student:"سارة", issue:"ألم بطن", severity:"حرج", parentStatus:"موافق", doctorStatus:"بانتظار اتصال", note:""},
+    ],
+    calls: [
+      {id:"C-300", ticket:"T-9002", status:"مجدولة", when:"خلال 5 دقائق"}
+    ]
+  });
+
+  const load = () => {
+    try{
+      const raw = localStorage.getItem(KEY);
+      return raw ? JSON.parse(raw) : seed();
+    }catch(e){ return seed(); }
+  };
+
+  const save = (state) => localStorage.setItem(KEY, JSON.stringify(state));
+
+  const getRole = () => localStorage.getItem(ROLE_KEY) || "";
+  const setRole = (r) => localStorage.setItem(ROLE_KEY, r);
+
+  const routes = {
+    school: "./dashboards/school.html",
+    doctor: "./dashboards/doctor.html",
+    parent: "./dashboards/parent.html",
+  };
+
+  const login = (role) => {
+    setRole(role);
+    const path = routes[role] || "./index.html";
+    window.location.href = path;
+  };
+
+  const logout = () => {
+    localStorage.removeItem(ROLE_KEY);
+    window.location.href = "./index.html";
+  };
+
+  const guard = (allowedRoles=[]) => {
+    const role = getRole();
+    if(!role || (allowedRoles.length && !allowedRoles.includes(role))){
+      window.location.href = "../index.html";
+    }
+  };
+
+  const api = {
+    getState: () => load(),
+    setState: (s) => save(s),
+    getRole,
+    login,
+    logout,
+    guard,
+
+    addTicket: (payload) => {
+      const s = load();
+      const id = "T-" + Math.floor(10000 + Math.random()*89999);
+      s.tickets.unshift({
+        id,
+        student: payload.student,
+        issue: payload.issue,
+        severity: payload.severity,
+        parentStatus: "بانتظار",
+        doctorStatus: "جديد",
+        note: payload.note || ""
+      });
+      save(s);
+      return id;
+    },
+
+    setParentStatus: (ticketId, status) => {
+      const s = load();
+      const t = s.tickets.find(x=>x.id===ticketId);
+      if(t) t.parentStatus = status;
+      save(s);
+    },
+
+    setDoctorStatus: (ticketId, status, note="") => {
+      const s = load();
+      const t = s.tickets.find(x=>x.id===ticketId);
+      if(t){
+        t.doctorStatus = status;
+        if(note) t.note = note;
+      }
+      save(s);
+    },
+
+    scheduleCall: (ticketId, when="الآن") => {
+      const s = load();
+      const id = "C-" + Math.floor(100 + Math.random()*900);
+      s.calls.unshift({id, ticket: ticketId, status:"جارية", when});
+      const t = s.tickets.find(x=>x.id===ticketId);
+      if(t) t.doctorStatus = "استشارة مرئية";
+      save(s);
+      return id;
+    }
+  };
+
+  window.SSC = api;
+})();
