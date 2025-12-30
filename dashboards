@@ -1,1 +1,296 @@
+const DB_KEY = "ssc_db_v1";
+const SESSION_KEY = "ssc_session_v1";
 
+function loadDB(){ return JSON.parse(localStorage.getItem(DB_KEY) || "{}"); }
+function saveDB(db){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
+function nowISO(){ return new Date().toISOString(); }
+function getSession(){
+  const raw = localStorage.getItem(SESSION_KEY);
+  if(!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+function clearSession(){ localStorage.removeItem(SESSION_KEY); }
+function $(s){ return document.querySelector(s); }
+
+function seedIfNeeded(){
+  if (localStorage.getItem(DB_KEY)) return;
+  // if user opened dashboards directly without visiting home
+  location.href = "../";
+}
+
+function resetDemo(){
+  localStorage.removeItem(DB_KEY);
+  localStorage.removeItem(SESSION_KEY);
+  location.href = "../";
+}
+
+function roleName(role){
+  return ({school:"المدرسة", doctor:"الطبيب", parent:"وليّ الأمر"}[role]) || role;
+}
+
+function consentLabel(v){
+  return ({pending:"بانتظار", approved:"موافق", rejected:"مرفوض"}[v]) || "—";
+}
+
+function canSeeTicket(session, ticket, db){
+  if (session.role === "school") return true;
+  if (session.role === "doctor") return ticket.assignedDoctorId === session.userId;
+  if (session.role === "parent"){
+    const me = db.users.find(u=>u.id===session.userId);
+    return me?.studentId && ticket.studentId === me.studentId;
+  }
+  return false;
+}
+
+function buildRows(session, db){
+  return db.tickets
+    .filter(t => canSeeTicket(session, t, db))
+    .map(t => {
+      const st = db.students.find(s=>s.id===t.studentId);
+      return {
+        ...t,
+        studentName: st ? `${st.name} (${st.grade})` : t.studentId,
+        parentConsentLabel: consentLabel(t.parentConsent),
+      };
+    });
+}
+
+function computeKPIs(session, db, rows){
+  const open = rows.filter(t=> t.status !== "مغلقة");
+  const waiting = open.filter(t=> t.status.includes("بانتظار الطبيب")).length;
+  const pending = open.filter(t=> t.parentConsent === "pending").length;
+  const high = open.filter(t=> t.triage === "عالي").length;
+
+  const kpisEl = $("#kpis");
+  kpisEl.innerHTML = [
+    kpiBox(open.length, "مفتوحة"),
+    kpiBox(waiting, "بانتظار الطبيب"),
+    kpiBox(pending, "بانتظار موافقة"),
+    kpiBox(high, "عالي"),
+  ].join("");
+}
+
+let CURRENT_TICKET_ID = null;
+
+function openModal(ticketId, session, db){
+  CURRENT_TICKET_ID = ticketId;
+  const t = db.tickets.find(x=>x.id===ticketId);
+  const st = db.students.find(s=>s.id===t.studentId);
+  const doctor = db.users.find(u=>u.id===t.assignedDoctorId);
+
+  $("#mTitle").textContent = `تفاصيل الحالة — ${st?.name || t.studentId}`;
+  const notes = (t.notes||[]).map(n=>`<li><b>${new Date(n.at).toLocaleString("ar-SA")}</b> — ${n.text}</li>`).join("");
+
+  $("#mBody").innerHTML = `
+    <div class="cols3">
+      <div class="card" style="padding:12px">
+        <div class="muted">الطالب</div>
+        <div><b>${st ? st.name : t.studentId}</b></div>
+        <div class="small">${st?.grade || "—"} — ${st?.school || "—"}</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div class="muted">الفرز / الحالة</div>
+        <div>${tag(t.triage)} ${tag(t.status)}</div>
+        <div class="small">موافقة وليّ الأمر: ${tag(consentLabel(t.parentConsent))}</div>
+      </div>
+      <div class="card" style="padding:12px">
+        <div class="muted">الطبيب المعيّن</div>
+        <div><b>${doctor?.name || "—"}</b></div>
+        <div class="small">(${doctor?.email || "—"})</div>
+      </div>
+    </div>
+
+    <div style="height:10px"></div>
+
+    <div class="card" style="padding:12px">
+      <div class="muted">الأعراض</div>
+      <div><b>${esc(t.symptoms)}</b></div>
+    </div>
+
+    <div style="height:10px"></div>
+
+    <div class="card" style="padding:12px">
+      <div class="muted">سجل الملاحظات</div>
+      <ul class="list">${notes || "<li>لا يوجد</li>"}</ul>
+
+      <div style="height:10px"></div>
+      <label>إضافة ملاحظة
+        <input id="noteInput" placeholder="اكتب ملاحظة…" />
+      </label>
+      <button class="btn" id="addNoteBtn">إضافة</button>
+    </div>
+  `;
+
+  // Permissions for buttons
+  const isDoctor = session.role === "doctor";
+  const isSchool = session.role === "school";
+  const isParent = session.role === "parent";
+
+  $("#btnStartCall").style.display = isDoctor ? "inline-block" : "none";
+  $("#btnAskConsent").style.display = (isDoctor || isSchool) ? "inline-block" : "none";
+  $("#btnResolve").style.display = (isDoctor || isSchool) ? "inline-block" : "none";
+
+  // Parent consent controls (parent sees consent buttons)
+  const consentAreaId = "consentArea";
+  const parentUI = `
+    <div style="height:10px"></div>
+    <div class="card" style="padding:12px" id="${consentAreaId}">
+      <div class="muted">قرار وليّ الأمر</div>
+      <div class="row">
+        <button class="btn primary" id="approveBtn">موافقة</button>
+        <button class="btn danger" id="rejectBtn">رفض</button>
+      </div>
+      <div class="small">* القرار ينعكس فورًا في لوحة الطبيب والمدرسة.</div>
+    </div>
+  `;
+  if (isParent){
+    $("#mBody").insertAdjacentHTML("beforeend", parentUI);
+  }
+
+  $("#backdrop").style.display = "flex";
+
+  // add note
+  $("#addNoteBtn").onclick = ()=>{
+    const inp = $("#noteInput");
+    const text = inp.value.trim();
+    if(!text) return;
+    const t2 = db.tickets.find(x=>x.id===ticketId);
+    t2.notes = t2.notes || [];
+    t2.notes.push({at: nowISO(), by: session.userId, text});
+    saveDB(db);
+    render(session); // re-render everything
+    openModal(ticketId, session, loadDB()); // reopen with updated data
+  };
+
+  if (isParent){
+    $("#approveBtn").onclick = ()=>{
+      const db2 = loadDB();
+      const t2 = db2.tickets.find(x=>x.id===ticketId);
+      t2.parentConsent = "approved";
+      t2.status = "موافق عليه — جاهز للاستشارة";
+      saveDB(db2);
+      render(session);
+      closeModal();
+    };
+    $("#rejectBtn").onclick = ()=>{
+      const db2 = loadDB();
+      const t2 = db2.tickets.find(x=>x.id===ticketId);
+      t2.parentConsent = "rejected";
+      t2.status = "مرفوض من وليّ الأمر";
+      saveDB(db2);
+      render(session);
+      closeModal();
+    };
+  }
+}
+
+function closeModal(){
+  $("#backdrop").style.display = "none";
+  CURRENT_TICKET_ID = null;
+}
+
+function startCall(ticketId, session){
+  const db = loadDB();
+  const call = db.calls.find(c=>c.ticketId===ticketId) || null;
+  const t = db.tickets.find(x=>x.id===ticketId);
+
+  if (t.parentConsent !== "approved"){
+    alert("لا يمكن بدء الاستشارة قبل موافقة وليّ الأمر.");
+    return;
+  }
+
+  if (call){
+    call.status = "in_progress";
+    call.startedAt = call.startedAt || nowISO();
+  } else {
+    db.calls.push({
+      id: "c_" + Math.random().toString(16).slice(2,10),
+      ticketId, startedAt: nowISO(), endedAt:null,
+      status:"in_progress", doctorId: session.userId,
+      parentUserId: db.users.find(u=>u.role==="parent" && u.studentId===t.studentId)?.id
+    });
+  }
+
+  t.status = "استشارة مرئية جارية (محاكاة)";
+  t.notes = t.notes || [];
+  t.notes.push({at: nowISO(), by: session.userId, text:"تم بدء الاستشارة المرئية (محاكاة)."});
+  saveDB(db);
+
+  alert("🎥 تم بدء الاستشارة (محاكاة). في النسخة الفعلية نربط WebRTC.");
+  render(session);
+  closeModal();
+}
+
+function askConsent(ticketId, session){
+  const db = loadDB();
+  const t = db.tickets.find(x=>x.id===ticketId);
+  t.parentConsent = "pending";
+  t.status = "بانتظار موافقة وليّ الأمر";
+  t.notes = t.notes || [];
+  t.notes.push({at: nowISO(), by: session.userId, text:"تم طلب موافقة وليّ الأمر للاستشارة."});
+  saveDB(db);
+  render(session);
+  alert("تم إرسال طلب الموافقة (محاكاة).");
+  closeModal();
+}
+
+function resolveTicket(ticketId, session){
+  const db = loadDB();
+  const t = db.tickets.find(x=>x.id===ticketId);
+  t.status = "مغلقة";
+  t.notes = t.notes || [];
+  t.notes.push({at: nowISO(), by: session.userId, text:"تم إغلاق الحالة."});
+  saveDB(db);
+  render(session);
+  closeModal();
+}
+
+function render(session){
+  const db = loadDB();
+  const rows = buildRows(session, db);
+
+  $("#sub").textContent = `الدخول مفعل — دورك: ${roleName(session.role)}`;
+  $("#who").textContent = `مرحبًا، ${session.name}`;
+  $("#roleLine").textContent = `الدور: ${roleName(session.role)} — (${session.email})`;
+
+  computeKPIs(session, db, rows);
+
+  $("#ticketsTable").innerHTML = tableTickets(rows);
+
+  // Bind open buttons
+  document.querySelectorAll("[data-open]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-open");
+      const db2 = loadDB();
+      openModal(id, session, db2);
+    });
+  });
+
+  // Modal action buttons (bind once via onclick)
+  $("#btnStartCall").onclick = ()=> CURRENT_TICKET_ID && startCall(CURRENT_TICKET_ID, session);
+  $("#btnAskConsent").onclick = ()=> CURRENT_TICKET_ID && askConsent(CURRENT_TICKET_ID, session);
+  $("#btnResolve").onclick = ()=> CURRENT_TICKET_ID && resolveTicket(CURRENT_TICKET_ID, session);
+}
+
+(function init(){
+  seedIfNeeded();
+  const session = getSession();
+  if(!session){
+    location.href = "../";
+    return;
+  }
+
+  $("#logoutBtn").addEventListener("click", ()=>{
+    clearSession();
+    location.href = "../";
+  });
+
+  $("#refreshBtn").addEventListener("click", ()=> render(session));
+  $("#resetBtn").addEventListener("click", ()=> resetDemo());
+  $("#closeModal").addEventListener("click", closeModal);
+  $("#backdrop").addEventListener("click", (e)=>{
+    if (e.target.id === "backdrop") closeModal();
+  });
+
+  render(session);
+})();
