@@ -412,3 +412,112 @@
   <script src="./app.js"></script>
 </body>
 </html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العيادة المدرسية الذكية — MVP</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🏥</span>
+      <div>
+        <div class="title">العيادة المدرسية الذكية</div>
+        <div class="subtitle">MVP محاكاة تشغيل واقعية — أدوار + صلاحيات + اتصال مرئي</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a class="navlink" href="./index.html">الرئيسية</a>
+      <a class="navlink" href="./clinic/index.html">العيادة</a>
+      <a class="navlink" href="./dashboards/school.html">لوحة المدرسة</a>
+      <a class="navlink" href="./dashboards/doctor.html">لوحة الطبيب</a>
+      <a class="navlink" href="./dashboards/parent.html">لوحة ولي الأمر</a>
+    </nav>
+
+    <div class="actions">
+      <button class="btn ghost" id="btnLogout">خروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero card">
+      <h1>تشغيل تجريبي سريع</h1>
+      <p class="muted">
+        اختر دورك وسجّل دخول تجريبي. بعد الدخول يتم توجيهك تلقائيًا للوحة المناسبة حسب الصلاحيات.
+      </p>
+
+      <div class="grid3">
+        <button class="roleCard" data-role="school">
+          <div class="roleIcon">🏫</div>
+          <div class="roleTitle">مدرسة</div>
+          <div class="roleDesc">إدارة زيارات الطلاب والتنبيهات وموافقات ولي الأمر</div>
+        </button>
+
+        <button class="roleCard" data-role="doctor">
+          <div class="roleIcon">🩺</div>
+          <div class="roleTitle">طبيب</div>
+          <div class="roleDesc">فرز الحالات + استشارة مرئية + توصيات وخطة متابعة</div>
+        </button>
+
+        <button class="roleCard" data-role="parent">
+          <div class="roleIcon">👨‍👩‍👧</div>
+          <div class="roleTitle">ولي أمر</div>
+          <div class="roleDesc">موافقة/رفض + متابعة الحالة + تقارير وملخصات</div>
+        </button>
+      </div>
+
+      <div class="hr"></div>
+
+      <section class="statusBox">
+        <div class="statusRow">
+          <span class="pill ok">جاهز للعرض للجنة</span>
+          <span class="pill info">صلاحيات مفعّلة</span>
+          <span class="pill warn">بيانات تجريبية</span>
+        </div>
+
+        <div class="muted small">
+          تلميح: بعد الدخول جرّب إنشاء “طلب استشارة” من صفحة العيادة، ثم راقب كيف يظهر للطبيب والمدرسة وولي الأمر.
+        </div>
+      </section>
+    </section>
+
+    <section class="card">
+      <h2>مؤشرات سريعة (Mock)</h2>
+      <div class="kpis">
+        <div class="kpi"><div class="kpiNum" id="kpiToday">—</div><div class="kpiLbl">زيارات اليوم</div></div>
+        <div class="kpi"><div class="kpiNum" id="kpiAlerts">—</div><div class="kpiLbl">تنبيهات حرجة</div></div>
+        <div class="kpi"><div class="kpiNum" id="kpiTele">—</div><div class="kpiLbl">استشارات مرئية</div></div>
+        <div class="kpi"><div class="kpiNum" id="kpiApproval">—</div><div class="kpiLbl">بانتظار موافقة</div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="muted">MVP Demo — GitHub Pages</span>
+    <span class="muted">Smart School Clinic Initiative © 2025</span>
+  </footer>
+
+  <script src="./app.js"></script>
+  <script>
+    // KPIs بسيطة
+    const s = window.SSC.getState();
+    document.getElementById('kpiToday').textContent = s.visits.length;
+    document.getElementById('kpiAlerts').textContent = s.tickets.filter(t=>t.severity==='حرج').length;
+    document.getElementById('kpiTele').textContent = s.calls.length;
+    document.getElementById('kpiApproval').textContent = s.tickets.filter(t=>t.parentStatus==='بانتظار').length;
+
+    // دخول سريع حسب الدور
+    document.querySelectorAll('.roleCard').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        window.SSC.login(btn.dataset.role);
+      });
+    });
+
+    document.getElementById('btnLogout').onclick = ()=> window.SSC.logout();
+  </script>
+</body>
+</html>
