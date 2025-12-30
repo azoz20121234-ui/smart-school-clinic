@@ -294,3 +294,309 @@ function render(session){
 
   render(session);
 })();
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة المدرسة</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🏫</span>
+      <div>
+        <div class="title">لوحة المدرسة</div>
+        <div class="subtitle">متابعة التذاكر + التنبيهات + الزيارات</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../clinic/index.html">إنشاء حالة</a>
+      <button class="btn ghost" id="btnLogout">خروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>التذاكر</h1>
+      <table class="table">
+        <thead><tr><th>رقم</th><th>الطالب</th><th>الخطورة</th><th>ولي الأمر</th><th>الطبيب</th></tr></thead>
+        <tbody id="tickets"></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>زيارات اليوم</h2>
+      <table class="table">
+        <thead><tr><th>رقم</th><th>الطالب</th><th>الصف</th><th>الوقت</th><th>الحالة</th></tr></thead>
+        <tbody id="visits"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="../app.js"></script>
+  <script>
+    SSC.guard(["school","doctor","parent"]); // تسمح للجميع بالعرض
+    document.getElementById('btnLogout').onclick = ()=> SSC.logout();
+
+    const render = ()=>{
+      const s = SSC.getState();
+      document.getElementById('tickets').innerHTML = s.tickets.map(t=>`
+        <tr>
+          <td>${t.id}</td>
+          <td>${t.student}</td>
+          <td><span class="pill ${t.severity==='حرج'?'bad':(t.severity==='متوسط'?'warn':'info')}">${t.severity}</span></td>
+          <td>${t.parentStatus}</td>
+          <td>${t.doctorStatus}</td>
+        </tr>
+      `).join("");
+
+      document.getElementById('visits').innerHTML = s.visits.map(v=>`
+        <tr>
+          <td>${v.id}</td><td>${v.student}</td><td>${v.grade}</td><td>${v.time}</td><td>${v.status}</td>
+        </tr>
+      `).join("");
+    };
+    render();
+  </script>
+</body>
+</html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة الطبيب</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🩺</span>
+      <div>
+        <div class="title">لوحة الطبيب</div>
+        <div class="subtitle">فرز + توصية + بدء استشارة مرئية (محاكاة)</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../clinic/index.html">إنشاء حالة</a>
+      <button class="btn ghost" id="btnLogout">خروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>قائمة التذاكر</h1>
+      <div class="muted small">اختر تذكرة ثم حدّث حالة الطبيب أو ابدأ استشارة مرئية.</div>
+      <div class="hr"></div>
+
+      <div class="formRow">
+        <div>
+          <label class="muted small">اختر التذكرة</label>
+          <select id="ticketSelect"></select>
+        </div>
+        <div>
+          <label class="muted small">حالة الطبيب</label>
+          <select id="doctorStatus">
+            <option>جديد</option>
+            <option>قيد المراجعة</option>
+            <option>بانتظار اتصال</option>
+            <option>استشارة مرئية</option>
+            <option>تم الإغلاق</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <label class="muted small">توصية/ملاحظة الطبيب</label>
+        <textarea id="doctorNote" placeholder="مثال: شرب سوائل + خافض حرارة + متابعة خلال ساعتين"></textarea>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+        <button class="btn primary" id="btnUpdate">تحديث</button>
+        <button class="btn" id="btnCall">بدء استشارة مرئية (Mock)</button>
+      </div>
+
+      <div class="hr"></div>
+      <div id="callBox" class="statusBox" style="display:none">
+        <div class="statusRow">
+          <span class="pill info">📹 مكالمة مرئية تجريبية</span>
+          <span class="pill ok" id="callId">—</span>
+        </div>
+        <div class="muted small">هذه محاكاة فقط. (لو تبغى WebRTC فعلي بعدين نفعّله).</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>عرض سريع</h2>
+      <table class="table">
+        <thead><tr><th>رقم</th><th>الطالب</th><th>الحالة</th><th>ولي الأمر</th><th>الطبيب</th></tr></thead>
+        <tbody id="tickets"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="../app.js"></script>
+  <script>
+    SSC.guard(["doctor","school","parent"]); // تسمح بالعرض للجميع
+    document.getElementById('btnLogout').onclick = ()=> SSC.logout();
+
+    const ticketSelect = document.getElementById('ticketSelect');
+
+    const refreshSelect = ()=>{
+      const s = SSC.getState();
+      ticketSelect.innerHTML = s.tickets.map(t=>`
+        <option value="${t.id}">${t.id} — ${t.student} (${t.severity})</option>
+      `).join("");
+      if(!s.tickets.length){
+        ticketSelect.innerHTML = `<option value="">لا توجد تذاكر</option>`;
+      }
+    };
+
+    const renderTable = ()=>{
+      const s = SSC.getState();
+      document.getElementById('tickets').innerHTML = s.tickets.map(t=>`
+        <tr>
+          <td>${t.id}</td>
+          <td>${t.student}</td>
+          <td>${t.issue}</td>
+          <td>${t.parentStatus}</td>
+          <td>${t.doctorStatus}</td>
+        </tr>
+      `).join("");
+    };
+
+    document.getElementById('btnUpdate').onclick = ()=>{
+      const id = ticketSelect.value;
+      const st = document.getElementById('doctorStatus').value;
+      const note = document.getElementById('doctorNote').value.trim();
+      if(!id) return;
+      SSC.setDoctorStatus(id, st, note);
+      renderTable();
+    };
+
+    document.getElementById('btnCall').onclick = ()=>{
+      const id = ticketSelect.value;
+      if(!id) return;
+      const callId = SSC.scheduleCall(id, "الآن");
+      document.getElementById('callBox').style.display = "block";
+      document.getElementById('callId').textContent = `Call ${callId} — Ticket ${id}`;
+      renderTable();
+    };
+
+    refreshSelect();
+    renderTable();
+  </script>
+</body>
+</html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة ولي الأمر</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">👨‍👩‍👧</span>
+      <div>
+        <div class="title">لوحة ولي الأمر</div>
+        <div class="subtitle">موافقة/رفض + متابعة توصيات الطبيب</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="../clinic/index.html">إنشاء حالة</a>
+      <button class="btn ghost" id="btnLogout">خروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>التذاكر الخاصة بالطالب (Mock)</h1>
+      <div class="muted small">اختر تذكرة ثم وافق/ارفض، وشوف توصية الطبيب تظهر مباشرة.</div>
+      <div class="hr"></div>
+
+      <div class="formRow">
+        <div>
+          <label class="muted small">اختر التذكرة</label>
+          <select id="ticketSelect"></select>
+        </div>
+        <div>
+          <label class="muted small">قرار ولي الأمر</label>
+          <select id="parentStatus">
+            <option>بانتظار</option>
+            <option>موافق</option>
+            <option>مرفوض</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button class="btn primary" id="btnSave">حفظ القرار</button>
+      </div>
+
+      <div class="hr"></div>
+      <div class="statusBox">
+        <div class="statusRow">
+          <span class="pill info">توصية الطبيب</span>
+        </div>
+        <div id="doctorNote" class="muted"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>سجل التذاكر</h2>
+      <table class="table">
+        <thead><tr><th>رقم</th><th>الطالب</th><th>الحالة</th><th>قرار ولي الأمر</th><th>الطبيب</th></tr></thead>
+        <tbody id="tickets"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="../app.js"></script>
+  <script>
+    SSC.guard(["parent","school","doctor"]);
+    document.getElementById('btnLogout').onclick = ()=> SSC.logout();
+
+    const ticketSelect = document.getElementById('ticketSelect');
+    const noteBox = document.getElementById('doctorNote');
+
+    const refresh = ()=>{
+      const s = SSC.getState();
+      ticketSelect.innerHTML = s.tickets.map(t=>`
+        <option value="${t.id}">${t.id} — ${t.student} (${t.parentStatus})</option>
+      `).join("") || `<option value="">لا توجد تذاكر</option>`;
+
+      document.getElementById('tickets').innerHTML = s.tickets.map(t=>`
+        <tr>
+          <td>${t.id}</td><td>${t.student}</td><td>${t.issue}</td><td>${t.parentStatus}</td><td>${t.doctorStatus}</td>
+        </tr>
+      `).join("");
+
+      showNote();
+    };
+
+    const showNote = ()=>{
+      const s = SSC.getState();
+      const id = ticketSelect.value;
+      const t = s.tickets.find(x=>x.id===id);
+      noteBox.textContent = (t && t.note) ? t.note : "لا توجد توصية بعد.";
+      if(t) document.getElementById('parentStatus').value = t.parentStatus;
+    };
+
+    document.getElementById('btnSave').onclick = ()=>{
+      const id = ticketSelect.value;
+      const st = document.getElementById('parentStatus').value;
+      if(!id) return;
+      SSC.setParentStatus(id, st);
+      refresh();
+    };
+
+    ticketSelect.onchange = showNote;
+    refresh();
+  </script>
+</body>
+</html>
