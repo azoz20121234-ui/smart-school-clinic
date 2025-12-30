@@ -1045,5 +1045,160 @@ function init(){
   persist();
   renderLogs();
 }
+/* ========= Smart School Clinic MVP (Static) =========
+   Auth + Roles + Demo Data using localStorage
+===================================================== */
 
+const DB_KEY = "ssc_db_v1";
+const SESSION_KEY = "ssc_session_v1";
+
+function nowISO(){ return new Date().toISOString(); }
+
+function seedIfNeeded(){
+  const existing = localStorage.getItem(DB_KEY);
+  if (existing) return;
+
+  const db = {
+    users: [
+      { id:"u_school", name:"إدارة المدرسة", email:"school@demo.com", password:"1234", role:"school" },
+      { id:"u_doctor", name:"د. سراج (تجريبي)", email:"doctor@demo.com", password:"1234", role:"doctor" },
+      { id:"u_parent", name:"ولي أمر — أحمد", email:"parent@demo.com", password:"1234", role:"parent", studentId:"s1" },
+    ],
+    students: [
+      { id:"s1", name:"أحمد محمد", grade:"الصف الرابع", school:"مدرسة المستقبل", parentName:"أبو أحمد", parentUserId:"u_parent" },
+      { id:"s2", name:"نورة علي", grade:"الصف السادس", school:"مدرسة المستقبل", parentName:"أم نورة" },
+    ],
+    tickets: [
+      {
+        id:"t1", createdAt: nowISO(), studentId:"s1",
+        createdBy:"u_school",
+        symptoms:"ارتفاع حرارة + صداع",
+        triage:"متوسط",
+        status:"بانتظار الطبيب",
+        assignedDoctorId:"u_doctor",
+        parentConsent:"pending",
+        notes:[ {at: nowISO(), by:"u_school", text:"تم قياس الحرارة 38.9 وإعطاء سوائل."} ]
+      }
+    ],
+    calls: [
+      { id:"c1", ticketId:"t1", startedAt:null, endedAt:null, status:"not_started", doctorId:"u_doctor", parentUserId:"u_parent" }
+    ]
+  };
+
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+
+function loadDB(){
+  seedIfNeeded();
+  return JSON.parse(localStorage.getItem(DB_KEY));
+}
+
+function saveDB(db){
+  localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+
+function setSession(user){
+  localStorage.setItem(SESSION_KEY, JSON.stringify({
+    userId: user.id,
+    role: user.role,
+    name: user.name,
+    email: user.email,
+    at: nowISO()
+  }));
+}
+
+function getSession(){
+  const raw = localStorage.getItem(SESSION_KEY);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+
+function clearSession(){
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function findUserByEmail(db, email){
+  return db.users.find(u => u.email.toLowerCase() === String(email).toLowerCase());
+}
+
+function $(sel){ return document.querySelector(sel); }
+
+function setMsg(el, text, kind="ok"){
+  if (!el) return;
+  el.textContent = text;
+  el.className = "msg " + (kind === "ok" ? "ok" : kind === "warn" ? "warn" : "bad");
+}
+
+function go(path){
+  window.location.href = path;
+}
+
+/* ======== Page Logic (index.html) ======== */
+(function initHome(){
+  if (!document.getElementById("loginForm")) return;
+
+  seedIfNeeded();
+
+  // Quick login buttons
+  document.querySelectorAll("[data-login]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const role = btn.getAttribute("data-login");
+      const creds = {
+        school: {email:"school@demo.com", password:"1234"},
+        doctor: {email:"doctor@demo.com", password:"1234"},
+        parent: {email:"parent@demo.com", password:"1234"},
+      }[role];
+      $("input[name=email]").value = creds.email;
+      $("input[name=password]").value = creds.password;
+    });
+  });
+
+  $("#loginForm").addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const db = loadDB();
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+
+    const user = findUserByEmail(db, email);
+    if (!user || user.password !== password){
+      return setMsg($("#loginMsg"), "بيانات الدخول غير صحيحة.", "bad");
+    }
+    setSession(user);
+    setMsg($("#loginMsg"), "تم الدخول بنجاح. تحويل للوحة التحكم…", "ok");
+    setTimeout(()=> go("./dashboards/"), 650);
+  });
+
+  $("#signupForm").addEventListener("submit", (e)=>{
+    e.preventDefault();
+    const db = loadDB();
+    const name = e.target.name.value.trim();
+    const role = e.target.role.value;
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value;
+
+    if (findUserByEmail(db, email)){
+      return setMsg($("#signupMsg"), "هذا البريد موجود مسبقًا.", "bad");
+    }
+
+    const id = "u_" + Math.random().toString(16).slice(2,10);
+    const newUser = { id, name, email, password, role };
+
+    // If parent, bind to first student for demo (or create new)
+    if (role === "parent"){
+      // create student demo
+      const sid = "s_" + Math.random().toString(16).slice(2,8);
+      db.students.push({
+        id: sid, name: "طالب جديد", grade:"—", school:"مدرسة المستقبل",
+        parentName: name, parentUserId: id
+      });
+      newUser.studentId = sid;
+    }
+
+    db.users.push(newUser);
+    saveDB(db);
+    setMsg($("#signupMsg"), "تم إنشاء الحساب. تقدر تسجل دخول الآن.", "ok");
+    e.target.reset();
+  });
+
+})();
 init();
