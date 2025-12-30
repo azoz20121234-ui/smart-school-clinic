@@ -4,567 +4,410 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>العيادة المدرسية الذكية — MVP</title>
-  <meta name="description" content="MVP تفاعلي: عيادة مدرسية + استشارة مرئية + لوحات تحكم + صلاحيات." />
+  <meta name="description" content="محاكاة تشغيل واقعية: أدوار وصلاحيات ولوحات تحكم واتصال مرئي للاستشارات." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css" />
 </head>
-<body>
-  <div class="bg-glow"></div>
 
+<body>
   <header class="topbar">
-    <div class="brand">
-      <div class="logo" aria-hidden="true">+</div>
-      <div class="brand-txt">
-        <div class="brand-title">العيادة المدرسية الذكية</div>
-        <div class="brand-sub">MVP — عيادة مدرسية + استشارة مرئية + لوحات تحكم + صلاحيات</div>
+    <div class="container topbar__inner">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">SSC</div>
+        <div class="brand__text">
+          <div class="brand__title">العيادة المدرسية الذكية</div>
+          <div class="brand__sub">MVP محاكاة تشغيل — أدوار + صلاحيات + اتصال مرئي</div>
+        </div>
       </div>
+
+      <nav class="nav">
+        <a href="#home" class="nav__link" data-route="home">الرئيسية</a>
+        <a href="#features" class="nav__link" data-route="features">المزايا</a>
+        <a href="#demo" class="nav__link" data-route="demo">الدخول والتجربة</a>
+        <a href="#contact" class="nav__link" data-route="contact">التواصل</a>
+      </nav>
+
+      <div class="topbar__actions">
+        <button class="btn btn--ghost" id="seedBtn" title="تهيئة بيانات تجريبية">تهيئة بيانات</button>
+        <button class="btn btn--primary" id="ctaBtn">ابدأ التجربة</button>
+      </div>
+
+      <button class="burger" id="burgerBtn" aria-label="القائمة">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
-    <nav class="tabs" aria-label="التنقل">
-      <button class="tab active" data-route="home">الرئيسية</button>
-      <button class="tab" data-route="workflow">سير العمل</button>
-      <button class="tab" data-route="login">الدخول</button>
-      <button class="tab" data-route="dash">لوحات التحكم</button>
-      <button class="tab" data-route="video">الاستشارة المرئية</button>
-      <button class="tab" data-route="settings">الصلاحيات</button>
-      <button class="tab" data-route="contact">التواصل</button>
-    </nav>
-
-    <div class="top-actions">
-      <div class="chip" id="sessionChip">غير مسجل</div>
-      <button class="btn ghost" id="btnReset" title="إعادة ضبط بيانات العرض">إعادة ضبط</button>
+    <div class="mobileNav" id="mobileNav">
+      <a href="#home" class="mobileNav__link" data-route="home">الرئيسية</a>
+      <a href="#features" class="mobileNav__link" data-route="features">المزايا</a>
+      <a href="#demo" class="mobileNav__link" data-route="demo">الدخول والتجربة</a>
+      <a href="#contact" class="mobileNav__link" data-route="contact">التواصل</a>
     </div>
   </header>
 
   <main class="container">
+    <!-- HERO -->
+    <section class="hero route" id="route-home">
+      <div class="hero__grid">
+        <div class="hero__content">
+          <div class="pill">
+            <span class="dot"></span>
+            عرض واقعي للجنة التحكيم: سير عمل كامل (Workflow) من القياس → التنبيه → الاستشارة → التوصية
+          </div>
 
-    <!-- HOME -->
-    <section class="panel route" id="route-home">
-      <div class="grid2">
-        <div class="card hero">
-          <div class="hero-title">عيادة مدرسية “تشبه الواقع” في عرض واحد</div>
-          <p class="muted">
-            هذا نموذج MVP تفاعلي: يسجل حالات، يطبق صلاحيات، ويُظهر رحلة طالب من الفحص إلى الاستشارة المرئية
-            ثم تقرير للمدرسة وولي الأمر والطبيب. (يعني لجنة التحكيم تشوف “قصة” مو مجرد تصميم 😄)
+          <h1 class="h1">
+            عيادة مدرسية + استشارة مرئية + لوحات تحكم
+            <span class="h1__accent">بصلاحيات واضحة</span>
+          </h1>
+
+          <p class="lead">
+            محاكاة تشغيل واقعية: طالب/مدرسة/ولي أمر/طبيب… بسجل زيارات، تنبيهات، وإغلاق حالة مع توصية.
           </p>
 
-          <div class="kpis">
-            <div class="kpi">
-              <div class="kpi-num" id="kpiCases">0</div>
-              <div class="kpi-label">حالات اليوم</div>
+          <div class="hero__stats">
+            <div class="stat">
+              <div class="stat__num">4</div>
+              <div class="stat__label">أدوار أساسية</div>
             </div>
-            <div class="kpi">
-              <div class="kpi-num" id="kpiPending">0</div>
-              <div class="kpi-label">بانتظار الطبيب</div>
+            <div class="stat">
+              <div class="stat__num">3</div>
+              <div class="stat__label">لوحات تحكم</div>
             </div>
-            <div class="kpi">
-              <div class="kpi-num" id="kpiCalls">0</div>
-              <div class="kpi-label">اتصالات (محاكاة)</div>
-            </div>
-            <div class="kpi">
-              <div class="kpi-num" id="kpiAlerts">0</div>
-              <div class="kpi-label">تنبيهات</div>
+            <div class="stat">
+              <div class="stat__num">1</div>
+              <div class="stat__label">اتصال مرئي (محلي)</div>
             </div>
           </div>
 
-          <div class="row gap">
-            <button class="btn" id="btnQuickDemo">شغّل ديمو واقعي الآن</button>
-            <button class="btn ghost" data-nav="login">ابدأ بتسجيل الدخول</button>
+          <div class="hero__buttons">
+            <a class="btn btn--primary" href="#demo">جرّب الدخول الآن</a>
+            <a class="btn btn--ghost" href="#features">شوف المزايا</a>
           </div>
 
-          <div class="notice ok" id="demoHint">
-            ✅ مناسب للعرض أمام لجنة التحكيم: أزرار ديمو، صلاحيات، وسجل أحداث واضح.
+          <div class="notice">
+            ✅ بدون دخول = بدون صلاحيات… حتى لو كنت “مدير الكون”.
           </div>
         </div>
 
+        <div class="hero__panel">
+          <div class="panel">
+            <div class="panel__head">
+              <div class="panel__title">حالة اليوم (محاكاة)</div>
+              <div class="badge badge--ok">تشغيل</div>
+            </div>
+
+            <div class="panel__body">
+              <div class="timeline">
+                <div class="tl">
+                  <div class="tl__dot"></div>
+                  <div class="tl__content">
+                    <div class="tl__title">سليم — طالب: محمد (صف 6)</div>
+                    <div class="tl__meta">تم إدخال القياسات</div>
+                  </div>
+                </div>
+
+                <div class="tl">
+                  <div class="tl__dot tl__dot--warn"></div>
+                  <div class="tl__content">
+                    <div class="tl__title">تنبيه: حرارة مرتفعة</div>
+                    <div class="tl__meta">تم إنشاء طلب استشارة</div>
+                  </div>
+                </div>
+
+                <div class="tl">
+                  <div class="tl__dot tl__dot--info"></div>
+                  <div class="tl__content">
+                    <div class="tl__title">موعد استشارة مرئية</div>
+                    <div class="tl__meta">خلال 5 دقائق (محاكاة)</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="miniCards">
+                <div class="miniCard">
+                  <div class="miniCard__k">آخر طلب</div>
+                  <div class="miniCard__v">اشتباه حرارة</div>
+                </div>
+                <div class="miniCard">
+                  <div class="miniCard__k">الحالة</div>
+                  <div class="miniCard__v">بانتظار الطبيب</div>
+                </div>
+                <div class="miniCard">
+                  <div class="miniCard__k">قناة التواصل</div>
+                  <div class="miniCard__v">Video (Local)</div>
+                </div>
+              </div>
+
+              <button class="btn btn--primary btn--block" id="jumpDemoBtn">ابدأ التجربة الآن</button>
+              <button class="btn btn--ghost btn--block" id="quickLoginAdmin">دخول سريع (مدرسة)</button>
+              <div class="hint">حسابات جاهزة: admin / 1234 — dr / 1234 — parent / 1234</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="route" id="route-features">
+      <div class="sectionHead">
+        <h2 class="h2">المزايا</h2>
+        <p class="muted">كل شيء مربوط باللوحات — مو كلام إنشائي.</p>
+      </div>
+
+      <div class="grid3">
         <div class="card">
-          <div class="card-title">نظرة سريعة: ماذا يثبت هذا الـMVP؟</div>
-          <ul class="list">
-            <li><b>مدرسة</b>: تسجيل حالة/زيارة + متابعة + إشعار ولي الأمر.</li>
-            <li><b>طبيب</b>: قائمة الحالات + قبول/رفض + توصية + تقرير.</li>
-            <li><b>ولي أمر</b>: إشعار + موافقة + متابعة + استشارة مرئية (محاكاة).</li>
-            <li><b>صلاحيات</b>: RBAC (مدير/مدرسة/طبيب/ولي أمر) مع قيود واضحة.</li>
-          </ul>
+          <div class="card__icon">📹</div>
+          <div class="card__title">اتصال مرئي للاستشارات</div>
+          <div class="card__text">تشغيل كاميرا محليًا + ملخص استشارة + إغلاق حالة وإرسال توصية.</div>
+        </div>
+        <div class="card">
+          <div class="card__icon">🧑‍⚕️</div>
+          <div class="card__title">لوحة الطبيب</div>
+          <div class="card__text">طلبات جديدة، فتح جلسة، كتابة ملخص، إرسال توصية/إحالة.</div>
+        </div>
+        <div class="card">
+          <div class="card__icon">🏫</div>
+          <div class="card__title">لوحة المدرسة</div>
+          <div class="card__text">إدارة الطلبة، إنشاء طلب استشارة، سجل زيارات، توزيع صلاحيات.</div>
+        </div>
+        <div class="card">
+          <div class="card__icon">👨‍👩‍👧</div>
+          <div class="card__title">لوحة ولي الأمر</div>
+          <div class="card__text">تنبيهات، موافقة، متابعة القياسات، استلام التوصية النهائية.</div>
+        </div>
+        <div class="card">
+          <div class="card__icon">🔐</div>
+          <div class="card__title">صلاحيات (RBAC)</div>
+          <div class="card__text">واجهة تتبدّل تلقائيًا حسب الدور — وتجربة “منع الوصول” واضحة.</div>
+        </div>
+        <div class="card">
+          <div class="card__icon">🧾</div>
+          <div class="card__title">سجل + تنبيهات</div>
+          <div class="card__text">سجل اليوم، حالة الطلب، تنبيه فوري لولي الأمر عند إغلاق الحالة.</div>
+        </div>
+      </div>
 
-          <div class="divider"></div>
+      <div class="callout">
+        <div>
+          <div class="callout__title">Workflow جاهز للعرض</div>
+          <div class="callout__text">طالب → قياسات → تنبيه → طلب استشارة → فيديو → توصية/إحالة</div>
+        </div>
+        <a class="btn btn--primary" href="#demo">جرّبه الآن</a>
+      </div>
+    </section>
 
-          <div class="card-title">حسابات تجريبية</div>
+    <!-- DEMO -->
+    <section class="route" id="route-demo">
+      <div class="sectionHead">
+        <h2 class="h2">الدخول والتجربة</h2>
+        <p class="muted">اختر الدور وسجّل دخول (تجريبي). ما نرسل بياناتك لأحد — حتى للكون ما نرسل 😄</p>
+      </div>
+
+      <div class="demoGrid">
+        <div class="card card--pad">
+          <div class="card__title">تسجيل الدخول</div>
+          <div class="card__text">حسابات جاهزة:</div>
+
           <div class="chips">
-            <button class="chip-btn" data-fill="admin">admin / 1234</button>
-            <button class="chip-btn" data-fill="school">school / 1234</button>
-            <button class="chip-btn" data-fill="doctor">doctor / 1234</button>
-            <button class="chip-btn" data-fill="parent">parent / 1234</button>
+            <button class="chip" data-fill="admin">admin / 1234 (مدرسة)</button>
+            <button class="chip" data-fill="dr">dr / 1234 (طبيب)</button>
+            <button class="chip" data-fill="parent">parent / 1234 (ولي أمر)</button>
           </div>
-
-          <div class="hint">
-            تقدر تغيّرها من صفحة “الصلاحيات”.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- WORKFLOW -->
-    <section class="panel route hidden" id="route-workflow">
-      <div class="card">
-        <div class="card-title">سير العمل الواقعي (Workflow)</div>
-        <div class="timeline" id="timeline"></div>
-
-        <div class="row gap">
-          <button class="btn" id="btnCreateCase">إنشاء حالة طالب (محاكاة)</button>
-          <button class="btn ghost" id="btnSimulateTriage">تشغيل سلسلة إجراءات تلقائية</button>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="grid2">
-          <div class="card soft">
-            <div class="card-title">سجل الأحداث (Audit Log)</div>
-            <div class="log" id="auditLog"></div>
-          </div>
-          <div class="card soft">
-            <div class="card-title">التنبيهات</div>
-            <div class="log" id="alertsLog"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LOGIN -->
-    <section class="panel route hidden" id="route-login">
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">الدخول التجريبي</div>
-          <p class="muted">اختر دورك… لا تخاف، ما فيه “حظر دائم” هنا 😄</p>
 
           <form id="loginForm" class="form">
-            <label>الدور</label>
-            <select id="roleSelect">
-              <option value="school">مدرسة</option>
-              <option value="doctor">طبيب</option>
-              <option value="parent">ولي أمر</option>
-              <option value="admin">مدير النظام</option>
+            <label class="label">الدور</label>
+            <select id="role" class="input">
+              <option value="school">مدير/منسق المدرسة</option>
+              <option value="doctor">الطبيب</option>
+              <option value="parent">ولي الأمر</option>
             </select>
 
-            <label>اسم المستخدم</label>
-            <input id="username" placeholder="مثال: school" autocomplete="username" />
+            <label class="label">اسم المستخدم</label>
+            <input id="username" class="input" placeholder="مثال: admin" autocomplete="username" />
 
-            <label>كلمة المرور</label>
-            <input id="password" type="password" placeholder="مثال: 1234" autocomplete="current-password" />
+            <label class="label">كلمة المرور</label>
+            <input id="password" class="input" placeholder="1234" type="password" autocomplete="current-password" />
 
-            <div class="row gap">
-              <button class="btn" type="submit">دخول</button>
-              <button class="btn ghost" type="button" id="btnLogout">تسجيل خروج</button>
+            <div class="form__row">
+              <button class="btn btn--primary" type="submit">دخول</button>
+              <button class="btn btn--ghost" type="button" id="logoutBtn">تسجيل خروج</button>
             </div>
           </form>
 
-          <div class="notice warn" id="loginMsg" style="display:none;"></div>
-        </div>
+          <div class="hr"></div>
 
-        <div class="card">
-          <div class="card-title">ماذا يحدث بعد الدخول؟</div>
-          <ul class="list">
-            <li>يتم تفعيل <b>قيود الصلاحيات</b> تلقائيًا.</li>
-            <li>تظهر لوحة مناسبة للدور في صفحة “لوحات التحكم”.</li>
-            <li>يمكن للطبيب/ولي الأمر تشغيل “الاستشارة المرئية”.</li>
-          </ul>
-          <div class="divider"></div>
-          <div class="notice ok">
-            نصيحة للعرض: ادخل كـ “مدرسة” وأنشئ حالة، ثم بدّل إلى “طبيب” واقبلها، ثم “ولي أمر” وابدأ مكالمة.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- DASHBOARDS -->
-    <section class="panel route hidden" id="route-dash">
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">لوحة حسب الدور</div>
-          <div class="notice" id="dashHint">سجّل دخولك لتفعيل لوحة الدور.</div>
-
-          <div class="row gap">
-            <button class="btn" id="btnOpenCaseModal">إنشاء حالة جديدة</button>
-            <button class="btn ghost" id="btnExport">تصدير البيانات (JSON)</button>
-          </div>
-
-          <div class="divider"></div>
-          <div class="table-wrap">
-            <table class="table" id="casesTable">
-              <thead>
-                <tr>
-                  <th>رقم</th>
-                  <th>الطالب</th>
-                  <th>الصف</th>
-                  <th>السبب</th>
-                  <th>الحالة</th>
-                  <th>الأولوية</th>
-                  <th>إجراءات</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
+          <div class="small muted">
+            تلميح: إذا حاب “تبهّر اللجنة” — اضغط تهيئة بيانات ثم دخول سريع، وابدأ تسوي طلب استشارة وتنتقل للطبيب.
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-title">تفاصيل الحالة</div>
-          <div id="caseDetails" class="muted">اختر حالة من الجدول.</div>
-          <div class="divider"></div>
+        <div class="card card--pad">
+          <div class="card__title">لوحة التحكم (حسب الصلاحية)</div>
+          <div class="card__text">تتغير تلقائيًا بعد تسجيل الدخول.</div>
 
-          <div class="grid2">
-            <div class="card soft">
-              <div class="card-title">مؤشرات حيوية (محاكاة)</div>
-              <div class="vitals" id="vitals"></div>
-              <button class="btn ghost" id="btnRefreshVitals">تحديث القياسات</button>
-            </div>
-            <div class="card soft">
-              <div class="card-title">خطة الإجراء</div>
-              <div class="muted" id="planBox">—</div>
-              <div class="row gap">
-                <button class="btn" id="btnAccept">قبول (طبيب)</button>
-                <button class="btn danger" id="btnReject">رفض (طبيب)</button>
-                <button class="btn ghost" id="btnNotifyParent">إشعار ولي الأمر</button>
+          <div id="dashboards" class="dashboards">
+            <!-- SCHOOL -->
+            <section class="dash" data-guard="school">
+              <div class="dash__head">
+                <div>
+                  <div class="dash__title">لوحة المدرسة</div>
+                  <div class="muted">صلاحية: إدارة الطلبة • إنشاء الطلبات • سجل الزيارات</div>
+                </div>
+                <div class="badge">School</div>
               </div>
-              <div class="row gap">
-                <button class="btn" id="btnStartCall">بدء استشارة مرئية</button>
-                <button class="btn ghost" id="btnCloseCase">إغلاق الحالة</button>
+
+              <div class="grid2">
+                <div class="box">
+                  <div class="box__title">إنشاء طلب استشارة</div>
+                  <div class="form">
+                    <label class="label">الطالب</label>
+                    <select id="schoolStudent" class="input"></select>
+
+                    <label class="label">سبب الطلب</label>
+                    <select id="schoolReason" class="input">
+                      <option>اشتباه حرارة</option>
+                      <option>إصابة بسيطة</option>
+                      <option>أعراض تنفسية</option>
+                      <option>أخرى</option>
+                    </select>
+
+                    <button class="btn btn--primary btn--block" id="createRequestBtn" type="button">إرسال للطبيب</button>
+                  </div>
+                  <div class="hint" id="schoolHint"></div>
+                </div>
+
+                <div class="box">
+                  <div class="box__title">سجل اليوم (محاكاة)</div>
+                  <div id="schoolLog" class="list"></div>
+                </div>
               </div>
-            </div>
+            </section>
+
+            <!-- DOCTOR -->
+            <section class="dash" data-guard="doctor">
+              <div class="dash__head">
+                <div>
+                  <div class="dash__title">لوحة الطبيب</div>
+                  <div class="muted">صلاحية: استقبال الطلبات • تشغيل الفيديو • إرسال التوصية</div>
+                </div>
+                <div class="badge">Doctor</div>
+              </div>
+
+              <div class="grid2">
+                <div class="box">
+                  <div class="box__title">طلبات الاستشارة</div>
+                  <div id="doctorRequests" class="list"></div>
+                </div>
+
+                <div class="box">
+                  <div class="box__title">إجراء الاستشارة</div>
+
+                  <div class="videoWrap">
+                    <video id="localVideo" playsinline autoplay muted></video>
+                    <div class="videoOverlay">
+                      <div class="badge badge--ghost">كاميرتك (محلي)</div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <button class="btn btn--primary" id="startCamBtn" type="button">تشغيل الكاميرا</button>
+                    <button class="btn btn--ghost" id="stopCamBtn" type="button">إيقاف</button>
+                  </div>
+
+                  <label class="label">ملخص الطبيب</label>
+                  <textarea id="doctorNotes" class="input input--area" placeholder="اكتب الملخص والتوصية هنا..."></textarea>
+
+                  <button class="btn btn--primary btn--block" id="closeCaseBtn" type="button">إغلاق الحالة + إرسال التوصية</button>
+                  <div class="hint" id="doctorHint"></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- PARENT -->
+            <section class="dash" data-guard="parent">
+              <div class="dash__head">
+                <div>
+                  <div class="dash__title">لوحة ولي الأمر</div>
+                  <div class="muted">صلاحية: تنبيهات • موافقة • استلام التوصية</div>
+                </div>
+                <div class="badge">Parent</div>
+              </div>
+
+              <div class="grid2">
+                <div class="box">
+                  <div class="box__title">التنبيهات</div>
+                  <div id="parentAlerts" class="list"></div>
+                  <div class="row">
+                    <button class="btn btn--primary" id="approveBtn" type="button">موافقة على الاستشارة</button>
+                    <button class="btn btn--ghost" id="denyBtn" type="button">رفض</button>
+                  </div>
+                  <div class="hint" id="parentHint"></div>
+                </div>
+
+                <div class="box">
+                  <div class="box__title">نتيجة الاستشارة</div>
+                  <div id="parentResult" class="resultBox">
+                    <div class="muted">التوصية تظهر هنا بعد إغلاق الطبيب للحالة.</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- GUEST -->
+            <section class="dash" data-guard="guest">
+              <div class="emptyState">
+                <div class="emptyState__icon">🔒</div>
+                <div class="emptyState__title">سجّل دخول عشان تظهر لوحة الصلاحيات</div>
+                <div class="muted">بدون دخول = بدون صلاحيات. النظام محترم نفسه.</div>
+                <a class="btn btn--primary" href="#demo">تسجيل الدخول</a>
+              </div>
+            </section>
           </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- VIDEO -->
-    <section class="panel route hidden" id="route-video">
-      <div class="card">
-        <div class="card-title">الاستشارة المرئية (محاكاة واقعية داخل المتصفح)</div>
-        <p class="muted">
-          تشغيل كاميرا/مايك + تسجيل ملاحظات + “طرف ثانٍ” محاكاة.
-          إذا فتحت الموقع في <b>تابين</b> على نفس الجهاز، بيصير تبادل إشارات عبر <b>BroadcastChannel</b>.
-        </p>
-
-        <div class="video-grid">
-          <div class="video-card">
-            <div class="video-title">الطرف الحالي</div>
-            <video id="localVideo" autoplay playsinline muted></video>
-            <div class="video-actions">
-              <button class="btn" id="btnCam">تشغيل الكاميرا</button>
-              <button class="btn ghost" id="btnMic">تبديل المايك</button>
-              <button class="btn danger" id="btnHang">إنهاء</button>
-            </div>
-          </div>
-
-          <div class="video-card">
-            <div class="video-title">الطرف الآخر (محاكاة/تاب ثاني)</div>
-            <video id="remoteVideo" autoplay playsinline></video>
-            <div class="notice" id="callStatus">غير متصل</div>
-            <div class="video-actions">
-              <button class="btn" id="btnCallInvite">إرسال دعوة اتصال</button>
-              <button class="btn ghost" id="btnOpenSecondTab">افتح “تاب ثاني” للطرف الآخر</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="grid2">
-          <div class="card soft">
-            <div class="card-title">ملاحظات الطبيب</div>
-            <textarea id="doctorNotes" rows="6" placeholder="اكتب الملاحظات والتوصيات هنا..."></textarea>
-            <div class="row gap">
-              <button class="btn" id="btnSaveNotes">حفظ في الحالة</button>
-              <button class="btn ghost" id="btnQuickRx">توليد توصية جاهزة</button>
-            </div>
-          </div>
-
-          <div class="card soft">
-            <div class="card-title">سجل المكالمة</div>
-            <div class="log" id="callLog"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SETTINGS / RBAC -->
-    <section class="panel route hidden" id="route-settings">
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">الصلاحيات (RBAC) — نسخة عرض</div>
-          <p class="muted">هنا نثبت للجنة أن عندك حوكمة وصلاحيات… مو “كل أحد أدمن” 😄</p>
-
-          <div class="table-wrap">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>الميزة</th>
-                  <th>مدرسة</th>
-                  <th>طبيب</th>
-                  <th>ولي أمر</th>
-                  <th>أدمن</th>
-                </tr>
-              </thead>
-              <tbody id="rbacTable"></tbody>
-            </table>
-          </div>
-
-          <div class="divider"></div>
-          <div class="notice ok">تطبيق القيود يتم تلقائيًا عند الدخول (وتظهر رسائل منع واضحة).</div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">حسابات الدخول (تعديل سريع)</div>
-          <div class="form">
-            <label>admin</label>
-            <input id="credAdmin" />
-            <label>school</label>
-            <input id="credSchool" />
-            <label>doctor</label>
-            <input id="credDoctor" />
-            <label>parent</label>
-            <input id="credParent" />
-            <div class="row gap">
-              <button class="btn" id="btnSaveCreds">حفظ</button>
-              <button class="btn ghost" id="btnRestoreCreds">استرجاع الافتراضي</button>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-          <div class="card-title">ملاحظة تقنية</div>
-          <p class="muted">
-            هذا MVP على GitHub Pages: البيانات محلية (LocalStorage) لسهولة العرض.
-            عند التحويل لإنتاج فعلي: نربط Backend + قاعدة بيانات + تسجيل دخول آمن + سجلات تدقيق.
-          </p>
         </div>
       </div>
     </section>
 
     <!-- CONTACT -->
-    <section class="panel route hidden" id="route-contact">
-      <div class="card">
-        <div class="card-title">التواصل</div>
-        <p class="muted">ضع هنا بريدك/روابط العرض/QR للعرض السريع.</p>
+    <section class="route" id="route-contact">
+      <div class="sectionHead">
+        <h2 class="h2">التواصل</h2>
+        <p class="muted">ضع بياناتك هنا لاحقًا (إيميل/واتساب/لينكدإن) + QR يفتح الموقع مباشرة.</p>
+      </div>
 
-        <div class="grid2">
-          <div class="card soft">
-            <div class="card-title">رابط الموقع</div>
-            <div class="mono" id="siteUrl">—</div>
-            <button class="btn ghost" id="btnCopyUrl">نسخ الرابط</button>
+      <div class="grid2">
+        <div class="card card--pad">
+          <div class="card__title">اقتراح سريع للجنة التحكيم</div>
+          <div class="card__text">
+            أضف زر “طلب عرض تجريبي” + صفحة “Pilot في مدرسة واحدة” + مؤشرات قياس (KPIs) بسيطة.
           </div>
-          <div class="card soft">
-            <div class="card-title">رسالة جاهزة للجنة</div>
-            <textarea id="pitchTxt" rows="7"></textarea>
-            <button class="btn" id="btnCopyPitch">نسخ</button>
-          </div>
+          <div class="hr"></div>
+          <ul class="ul">
+            <li>زمن الاستجابة للطلب</li>
+            <li>نسبة الحالات المغلقة خلال اليوم</li>
+            <li>عدد التنبيهات الحرجة</li>
+            <li>رضا ولي الأمر (سؤال واحد)</li>
+          </ul>
         </div>
 
-        <div class="divider"></div>
-        <div class="notice ok">
-          إذا تبغى: أكتب لك نص “سكريبت عرض” لمدة 60 ثانية يشرح الـMVP خطوة بخطوة للجنة.
+        <div class="card card--pad">
+          <div class="card__title">بيانات المبادرة</div>
+          <div class="card__text">Smart School Clinic Initiative ©</div>
+          <div class="muted small">MVP Demo — GitHub Pages</div>
+          <div class="hr"></div>
+          <div class="small muted">ملاحظة: الفيديو محلي عبر المتصفح (getUserMedia) ويحتاج سماح كاميرا.</div>
         </div>
       </div>
     </section>
 
+    <footer class="footer">
+      <div>© <span id="year"></span> العيادة المدرسية الذكية — MVP</div>
+      <div class="muted small">Built for demos. Real impact later ✨</div>
+    </footer>
   </main>
 
-  <!-- Modal: Create Case -->
-  <div class="modal hidden" id="caseModal" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head">
-        <div class="modal-title">إنشاء حالة طالب</div>
-        <button class="icon-btn" id="btnCloseModal" aria-label="إغلاق">✕</button>
-      </div>
-
-      <form id="caseForm" class="form">
-        <div class="grid2">
-          <div>
-            <label>اسم الطالب</label>
-            <input id="cStudent" placeholder="محمد" required />
-          </div>
-          <div>
-            <label>الصف</label>
-            <input id="cGrade" placeholder="سادس (ب)" required />
-          </div>
-        </div>
-
-        <label>سبب الزيارة</label>
-        <input id="cReason" placeholder="حرارة + صداع" required />
-
-        <div class="grid2">
-          <div>
-            <label>الأولوية</label>
-            <select id="cPriority">
-              <option value="عادي">عادي</option>
-              <option value="متوسط">متوسط</option>
-              <option value="عاجل">عاجل</option>
-            </select>
-          </div>
-          <div>
-            <label>موافقة ولي الأمر</label>
-            <select id="cConsent">
-              <option value="pending">بانتظار</option>
-              <option value="approved">موافق</option>
-              <option value="rejected">مرفوض</option>
-            </select>
-          </div>
-        </div>
-
-        <label>ملاحظة (اختياري)</label>
-        <textarea id="cNote" rows="3" placeholder="مثال: تم قياس الحرارة عند الدخول..."></textarea>
-
-        <div class="row gap">
-          <button class="btn" type="submit">حفظ الحالة</button>
-          <button class="btn ghost" type="button" id="btnDemoCase">تعبئة نموذج جاهز</button>
-        </div>
-
-        <div class="notice warn" id="caseMsg" style="display:none;"></div>
-      </form>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <span class="muted">MVP Demo — Smart School Clinic Initiative © <span id="year"></span></span>
-  </footer>
-
-  <script src="./app.js"></script>
-</body>
-</html>
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>العيادة المدرسية الذكية — MVP</title>
-  <link rel="stylesheet" href="./styles.css" />
-</head>
-<body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">🏥</div>
-      <div>
-        <div class="title">العيادة المدرسية الذكية</div>
-        <div class="subtitle">MVP — دخول، صلاحيات، لوحات، عيادة، واستشارة مرئية (محاكاة)</div>
-      </div>
-    </div>
-
-    <nav class="nav">
-      <a class="navlink" href="./clinic/">العيادة</a>
-      <a class="navlink" href="./dashboards/">لوحات التحكم</a>
-      <a class="navlink" href="#about">عن المشروع</a>
-    </nav>
-  </header>
-
-  <main class="container grid2">
-    <section class="card">
-      <h2>تسجيل الدخول</h2>
-      <p class="muted">اختر حسابًا تجريبيًا أو سجّل دخولك بنفسك.</p>
-
-      <div class="quick">
-        <button class="pill" data-login="school">دخول كـ المدرسة</button>
-        <button class="pill" data-login="doctor">دخول كـ الطبيب</button>
-        <button class="pill" data-login="parent">دخول كـ وليّ الأمر</button>
-      </div>
-
-      <form id="loginForm" class="form">
-        <label>البريد/المعرف
-          <input name="email" placeholder="school@demo.com" autocomplete="username" required />
-        </label>
-        <label>كلمة المرور
-          <input name="password" placeholder="1234" type="password" autocomplete="current-password" required />
-        </label>
-
-        <button class="btn primary" type="submit">دخول</button>
-        <div id="loginMsg" class="msg"></div>
-      </form>
-
-      <hr class="sep" />
-
-      <details>
-        <summary>بيانات الدخول التجريبية</summary>
-        <ul class="list">
-          <li><b>المدرسة</b>: school@demo.com / 1234</li>
-          <li><b>الطبيب</b>: doctor@demo.com / 1234</li>
-          <li><b>وليّ الأمر</b>: parent@demo.com / 1234</li>
-        </ul>
-      </details>
-    </section>
-
-    <section class="card">
-      <h2>إنشاء حساب (تجريبي)</h2>
-      <p class="muted">ينحفظ محليًا في المتصفح (localStorage) — مناسب للعرض أمام اللجنة.</p>
-
-      <form id="signupForm" class="form">
-        <label>الاسم
-          <input name="name" placeholder="عبدالعزيز" required />
-        </label>
-
-        <label>الدور (Role)
-          <select name="role" required>
-            <option value="school">المدرسة</option>
-            <option value="doctor">الطبيب</option>
-            <option value="parent">وليّ الأمر</option>
-          </select>
-        </label>
-
-        <label>البريد/المعرف
-          <input name="email" placeholder="name@example.com" autocomplete="username" required />
-        </label>
-
-        <label>كلمة المرور
-          <input name="password" placeholder="••••" type="password" autocomplete="new-password" required />
-        </label>
-
-        <button class="btn" type="submit">إنشاء</button>
-        <div id="signupMsg" class="msg"></div>
-      </form>
-
-      <div class="callouts">
-        <div class="badge">✅ صلاحيات</div>
-        <div class="badge">✅ تذاكر</div>
-        <div class="badge">✅ حالات طلاب</div>
-        <div class="badge">✅ استشارة مرئية (محاكاة)</div>
-      </div>
-    </section>
-
-    <section id="about" class="card span2">
-      <h2>كيف يعمل الـ MVP؟</h2>
-      <div class="cols3">
-        <div>
-          <h3>المدرسة</h3>
-          <ul class="list">
-            <li>إنشاء تذكرة حالة لطالب</li>
-            <li>متابعة الحالات ورفعها للطبيب</li>
-            <li>لوحة إحصاءات ومؤشرات</li>
-          </ul>
-        </div>
-        <div>
-          <h3>الطبيب</h3>
-          <ul class="list">
-            <li>استقبال الحالات وفرزها</li>
-            <li>بدء استشارة مرئية (محاكاة)</li>
-            <li>وصفات/توصيات ومتابعة</li>
-          </ul>
-        </div>
-        <div>
-          <h3>وليّ الأمر</h3>
-          <ul class="list">
-            <li>مشاهدة حالة الابن</li>
-            <li>الموافقة/الرفض على الاستشارة</li>
-            <li>استلام خطة متابعة</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="notice">
-        هذا مشروع MVP للعرض والتجربة على GitHub Pages. عند جاهزية المرحلة التالية نربطه بباك-إند (Firebase/Supabase/Next.js API) + WebRTC للاستشارة الفعلية.
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div>© العيادة المدرسية الذكية — MVP</div>
-    <div class="muted">لو تحب… نخليها “MVP يخوّف اللجان” مو بس يعجبهم 😄</div>
-  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="./app.js"></script>
 </body>
