@@ -1,1 +1,119 @@
 
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>العيادة — العيادة المدرسية الذكية</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🏥</span>
+      <div>
+        <div class="title">العيادة المدرسية الذكية</div>
+        <div class="subtitle">إنشاء تذكرة + تحويل للطبيب + موافقة ولي الأمر</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a class="navlink" href="../index.html">الرئيسية</a>
+      <a class="navlink" href="./index.html">العيادة</a>
+      <a class="navlink" href="../dashboards/school.html">لوحة المدرسة</a>
+      <a class="navlink" href="../dashboards/doctor.html">لوحة الطبيب</a>
+      <a class="navlink" href="../dashboards/parent.html">لوحة ولي الأمر</a>
+    </nav>
+
+    <div class="actions">
+      <button class="btn ghost" id="btnLogout">خروج</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>إنشاء طلب (Triage)</h1>
+      <p class="muted">هذا القسم يمثل الممرضة/العيادة داخل المدرسة: إدخال الحالة ثم تُوزّع تلقائيًا على الأطراف.</p>
+
+      <div class="formRow">
+        <div>
+          <label class="muted small">اسم الطالب</label>
+          <input id="student" placeholder="مثال: محمد" />
+        </div>
+        <div>
+          <label class="muted small">درجة الخطورة</label>
+          <select id="severity">
+            <option>منخفض</option>
+            <option selected>متوسط</option>
+            <option>حرج</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:10px">
+        <label class="muted small">وصف الحالة</label>
+        <input id="issue" placeholder="مثال: حرارة + صداع" />
+      </div>
+
+      <div style="margin-top:10px">
+        <label class="muted small">ملاحظات</label>
+        <textarea id="note" placeholder="أي تفاصيل إضافية..."></textarea>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+        <button class="btn primary" id="btnCreate">إنشاء التذكرة</button>
+        <a class="btn" href="../dashboards/doctor.html">اذهب للطبيب</a>
+        <a class="btn" href="../dashboards/parent.html">اذهب لولي الأمر</a>
+        <a class="btn" href="../dashboards/school.html">اذهب للمدرسة</a>
+      </div>
+
+      <div class="hr"></div>
+      <div id="result" class="muted"></div>
+    </section>
+
+    <section class="card">
+      <h2>آخر التذاكر</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>رقم</th><th>الطالب</th><th>الحالة</th><th>الخطورة</th><th>ولي الأمر</th><th>الطبيب</th>
+          </tr>
+        </thead>
+        <tbody id="tickets"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="../app.js"></script>
+  <script>
+    document.getElementById('btnLogout').onclick = ()=> SSC.logout();
+
+    const render = ()=>{
+      const s = SSC.getState();
+      const rows = s.tickets.slice(0,8).map(t=>`
+        <tr>
+          <td>${t.id}</td>
+          <td>${t.student}</td>
+          <td>${t.issue}</td>
+          <td><span class="pill ${t.severity==='حرج'?'bad':(t.severity==='متوسط'?'warn':'info')}">${t.severity}</span></td>
+          <td>${t.parentStatus}</td>
+          <td>${t.doctorStatus}</td>
+        </tr>
+      `).join("");
+      document.getElementById('tickets').innerHTML = rows || `<tr><td colspan="6" class="muted">لا توجد بيانات</td></tr>`;
+    };
+
+    document.getElementById('btnCreate').onclick = ()=>{
+      const student = document.getElementById('student').value.trim() || "طالب";
+      const issue = document.getElementById('issue').value.trim() || "غير محدد";
+      const severity = document.getElementById('severity').value;
+      const note = document.getElementById('note').value.trim();
+      const id = SSC.addTicket({student, issue, severity, note});
+      document.getElementById('result').innerHTML = `✅ تم إنشاء التذكرة <b>${id}</b> — الآن ستظهر في لوحات الطبيب/المدرسة/ولي الأمر.`;
+      render();
+    };
+
+    render();
+  </script>
+</body>
+</html>
