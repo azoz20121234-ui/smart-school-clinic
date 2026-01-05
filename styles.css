@@ -577,3 +577,9 @@ textarea{ min-height:100px; resize:vertical; }
   border-top:1px solid var(--line);
   color:var(--muted);
 }
+.live-status{
+  display:flex; gap:16px; padding:10px 16px;
+  background:linear-gradient(90deg,#0f2027,#203a43,#2c5364);
+  color:#fff; font-size:14px; border-radius:12px;
+  margin-bottom:12px;
+}
