@@ -59,3 +59,9 @@ function addTimelineEvent(state, title, meta = {}) {
   state.timeline.unshift(item);
   return item;
 }
+function updateLiveStatus(state){
+  document.getElementById("caseCount").textContent =
+    `📋 الحالات اليوم: ${state.cases?.length || 1}`;
+  document.getElementById("lastUpdate").textContent =
+    `⏱ آخر تحديث: ${new Date().toLocaleTimeString("ar-SA")}`;
+}
