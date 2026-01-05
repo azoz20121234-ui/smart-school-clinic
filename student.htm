@@ -1,30 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>لوحة الطالب</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة الطالب</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand"><div class="logo"></div><div class="title">لوحة الطالب</div></div>
+      <div class="row">
+        <a class="badge" href="index.html">العودة</a>
+      </div>
+    </div>
 
-<h2>👨‍🎓 لوحة الطالب</h2>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card">
+        <h3>إنشاء حالة</h3>
+        <p class="muted">قياسات افتراضية (IoT Simulation) + قرار فرز AI-assisted</p>
+        <textarea id="complaint" placeholder="اكتب الشكوى… مثال: صداع ودوخة"></textarea>
 
-<input id="complaint" placeholder="اكتب الشكوى الصحية" />
+        <div class="grid cols-3" style="margin:10px 0">
+          <div class="kpi"><div><div class="lbl">Temp</div><div class="num" id="vTemp">—</div></div><div>🌡</div></div>
+          <div class="kpi"><div><div class="lbl">HR</div><div class="num" id="vHr">—</div></div><div>❤️</div></div>
+          <div class="kpi"><div><div class="lbl">SpO₂</div><div class="num" id="vSpo2">—</div></div><div>🫁</div></div>
+        </div>
 
-<button onclick="startVitalsUI()">▶️ بدء القياس</button>
+        <div class="btns">
+          <button class="info" id="startIoT">بدء القياس</button>
+          <button id="stopIoT">إيقاف القياس</button>
+          <button class="primary" id="sendCase">إرسال الحالة</button>
+          <button id="genCase">توليد حالة جاهزة</button>
+        </div>
+      </div>
 
-<div class="vitals">
-  🌡 <span id="temp">--</span>
-  ❤️ <span id="hr">--</span>
-  🫁 <span id="spo2">--</span>
-</div>
+      <div class="card">
+        <h3>النتيجة</h3>
+        <div id="resultBox" class="muted">لم يتم إنشاء حالة بعد.</div>
+        <hr class="sep"/>
+        <h3>آخر حالة</h3>
+        <div id="latestBox" class="muted">—</div>
+        <div class="btns" style="margin-top:10px">
+          <button id="printReport">طباعة تقرير (PDF)</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<button class="primary" onclick="createCaseUI()">📨 إرسال الحالة</button>
-
-<p id="triageResult"></p>
-
-<a href="index.html">⬅️ رجوع</a>
-
-<script type="module" src="js/app.js"></script>
+  <script type="module" src="js/pages/student.js"></script>
 </body>
 </html>
