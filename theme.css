@@ -1,1 +1,13 @@
+:root{
+  --bg:#020617;
+  --card:#020617;
+  --accent:#22c55e;
+  --danger:#ef4444;
+  --text:#e5e7eb;
+}
 
+body{
+  background:linear-gradient(180deg,#020617,#020617);
+  color:var(--text);
+  font-family:system-ui;
+}
