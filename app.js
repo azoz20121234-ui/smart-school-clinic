@@ -1,86 +1,36 @@
-const appState = {
-  vitals:{},
-  timeline:[],
-  cases:[]
+import { state } from "./state.js";
+import { startVitals, stopVitals } from "./vitals.js";
+import { triageCase } from "./triage.js";
+import { addEvent } from "./timeline.js";
+
+window.startVitalsUI = () =>{
+  startVitals(v=>{
+    temp.textContent=v.temp;
+    hr.textContent=v.hr;
+    spo2.textContent=v.spo2;
+  });
 };
 
-// ========== IoT Simulation ==========
-let sim;
-function startVitals(){
-  clearInterval(sim);
-  sim = setInterval(()=>{
-    appState.vitals = {
-      temp:(36.5 + Math.random()*2).toFixed(1),
-      hr:Math.floor(70 + Math.random()*40),
-      spo2:Math.floor(93 + Math.random()*6)
-    };
-    temp.textContent = appState.vitals.temp;
-    hr.textContent = appState.vitals.hr;
-    spo2.textContent = appState.vitals.spo2;
-  },800);
-}
+window.createCaseUI = () =>{
+  stopVitals();
+  const complaint = complaintInput.value;
 
-// ========== AI-like Triage ==========
-function triageCase(v,c){
-  let level="أخضر", reason=[];
-  if(v.spo2<=92){level="أحمر";reason.push("انخفاض الأكسجين")}
-  if(v.temp>=39){level="برتقالي";reason.push("حرارة عالية")}
-  if(c.includes("دوخة")||c.includes("إغماء")){level="أحمر"}
-  return {
-    level,
-    note:`الفرز الأولي (مساعد): مستوى ${level}`
-  };
-}
+  const triage = triageCase(state.vitals, complaint);
+  state.currentCase = { vitals:state.vitals, complaint, triage };
+  state.cases.push(state.currentCase);
 
-// ========== Timeline ==========
-function addEvent(title,level){
-  appState.timeline.unshift({
-    at:new Date().toLocaleTimeString("ar-SA"),
-    title,level
-  });
+  addEvent("تم إنشاء الحالة", {level:triage.level});
+  triageResult.textContent = triage.note;
+
   renderTimeline();
-}
+};
 
 function renderTimeline(){
   timeline.innerHTML="";
-  appState.timeline.forEach(e=>{
+  state.timeline.forEach(e=>{
     const li=document.createElement("li");
-    li.className=e.level;
-    li.textContent=`${e.at} — ${e.title}`;
+    li.textContent=`${e.time} — ${e.title}`;
+    li.style.borderRight = e.meta.level==="أحمر" ? "4px solid red" : "";
     timeline.appendChild(li);
   });
-}
-
-// ========== Case ==========
-function createCase(){
-  clearInterval(sim);
-  const complaint = document.getElementById("complaint").value;
-  const triage = triageCase(appState.vitals,complaint);
-  appState.cases.push(triage);
-
-  triageResult.textContent = triage.note;
-  addEvent("تم إنشاء الحالة",triage.level);
-
-  if(triage.level==="أحمر"){
-    document.body.classList.add("alert-red");
-    alert("🚨 حالة حرجة — تفعيل الطوارئ (محاكاة)");
-  }
-
-  updateStatus();
-}
-
-// ========== Status ==========
-function updateStatus(){
-  caseCount.textContent = `📋 الحالات اليوم: ${appState.cases.length}`;
-  lastUpdate.textContent = `⏱ آخر تحديث: ${new Date().toLocaleTimeString("ar-SA")}`;
-}
-
-// ========== PDF ==========
-function exportReport(){
-  const w = window.open("");
-  w.document.write(`<h2>تقرير الحالة</h2>
-    <p>${triageResult.textContent}</p>
-    <pre>${appState.timeline.map(t=>t.title).join("\n")}</pre>
-  `);
-  w.print();
 }
