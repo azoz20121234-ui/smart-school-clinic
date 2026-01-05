@@ -1,20 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>العيادة المدرسية الذكية</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="center">
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <div class="title">العيادة المدرسية الذكية</div>
+          <div class="muted" style="font-size:12px">منصة MVP تشغيلية + مولّد حالات + قرار فرز (AI-assisted)</div>
+        </div>
+      </div>
+      <div class="badge">GitHub Pages Ready</div>
+    </div>
 
-<h1>🏥 العيادة المدرسية الذكية</h1>
-<p>اختر نوع الدخول</p>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card">
+        <h3>تسجيل الدخول</h3>
+        <p class="muted">حسابات تجريبية: student/doctor/parent/admin — كلمة المرور: 1234</p>
+        <div class="grid" style="gap:10px">
+          <input id="u" placeholder="اسم المستخدم" value="student" />
+          <input id="p" placeholder="كلمة المرور" type="password" value="1234" />
+          <div class="btns">
+            <button class="primary" id="loginBtn">دخول</button>
+            <button id="resetBtn">إعادة ضبط البيانات</button>
+          </div>
+          <div id="loginMsg" class="muted"></div>
+        </div>
+        <hr class="sep"/>
+        <div class="btns">
+          <a class="pill green" href="student.html">واجهة الطالب</a>
+          <a class="pill orange" href="doctor.html">واجهة الطبيب</a>
+          <a class="pill yellow" href="parent.html">واجهة ولي الأمر</a>
+          <a class="pill red" href="admin.html">الإدارة</a>
+        </div>
+      </div>
 
-<div class="grid">
-  <a href="student.html" class="card">👨‍🎓 دخول طالب</a>
-  <a href="doctor.html" class="card">👨‍⚕️ دخول طبيب</a>
-  <a href="parent.html" class="card">👨‍👩‍👧 دخول ولي أمر</a>
-</div>
+      <div class="card">
+        <h3>Demo Mode + مولّد الحالات</h3>
+        <p class="muted">يضخ حالات افتراضية تلقائياً لتجربة قرار الفرز والواجهات.</p>
+        <div class="btns">
+          <button class="info" id="demoStart">تشغيل Demo</button>
+          <button id="demoStop">إيقاف Demo</button>
+          <button id="demoOnce">حالة واحدة الآن</button>
+        </div>
+        <hr class="sep"/>
+        <div class="grid cols-3">
+          <div class="kpi"><div><div class="lbl">إجمالي الحالات</div><div class="num" id="kCases">0</div></div><div>📋</div></div>
+          <div class="kpi"><div><div class="lbl">آخر مستوى</div><div class="num" id="kLevel">—</div></div><div>🧠</div></div>
+          <div class="kpi"><div><div class="lbl">آخر تحديث</div><div class="num" id="kTime">—</div></div><div>⏱</div></div>
+        </div>
+        <p class="muted" style="margin-top:10px">إذا المنصة “تتكلم لحالها”… هذا مو خلل—هذا Demo 😄</p>
+      </div>
+    </div>
+  </div>
 
+  <script type="module">
+    import { login } from "./js/auth.js";
+    import { loadDB, resetDB } from "./js/storage.js";
+    import { toast } from "./js/ui.js";
+    import { startDemo, stopDemo, runOnce } from "./js/demo.js";
+
+    const $ = (id)=>document.getElementById(id);
+
+    function refreshKPIs(){
+      const db = loadDB();
+      $("kCases").textContent = db.cases.length;
+      const latest = db.cases[0];
+      $("kLevel").textContent = latest?.triage?.level || "—";
+      $("kTime").textContent = latest?.updatedAt ? new Date(latest.updatedAt).toLocaleTimeString("ar-SA") : "—";
+    }
+
+    $("loginBtn").onclick = ()=>{
+      const r = login($("u").value.trim(), $("p").value);
+      $("loginMsg").textContent = r.ok ? "تم تسجيل الدخول ✅" : r.msg;
+      toast(r.ok ? "أهلاً بك 👋" : "جرّب user صحيح + 1234");
+    };
+
+    $("resetBtn").onclick = ()=>{
+      resetDB();
+      toast("تمت إعادة ضبط البيانات");
+      refreshKPIs();
+    };
+
+    $("demoStart").onclick = ()=>{
+      startDemo(7000);
+      toast("Demo شغّال ✅");
+      refreshKPIs();
+    };
+    $("demoStop").onclick = ()=>{
+      stopDemo();
+      toast("تم إيقاف Demo");
+    };
+    $("demoOnce").onclick = ()=>{
+      runOnce();
+      toast("تم توليد حالة الآن");
+      refreshKPIs();
+    };
+
+    refreshKPIs();
+    setInterval(refreshKPIs, 1500);
+  </script>
 </body>
 </html>
