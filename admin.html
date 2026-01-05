@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>إدارة النظام</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand"><div class="logo"></div><div class="title">لوحة الإدارة</div></div>
+      <div class="row">
+        <a class="badge" href="index.html">العودة</a>
+      </div>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card">
+        <h3>تحكم سريع</h3>
+        <div class="btns">
+          <button class="info" id="demoStart">تشغيل Demo</button>
+          <button id="demoStop">إيقاف Demo</button>
+          <button id="demoOnce">حالة واحدة</button>
+          <button class="danger" id="reset">إعادة ضبط البيانات</button>
+        </div>
+        <hr class="sep"/>
+        <div class="grid cols-3">
+          <div class="kpi"><div><div class="lbl">الحالات</div><div class="num" id="kCases">0</div></div><div>📋</div></div>
+          <div class="kpi"><div><div class="lbl">NEW</div><div class="num" id="kNew">0</div></div><div>🟢</div></div>
+          <div class="kpi"><div><div class="lbl">DONE</div><div class="num" id="kDone">0</div></div><div>✅</div></div>
+        </div>
+        <p class="muted" style="margin-top:10px">ملاحظة: الإدارة تشوف كل شيء… حتى “الأخطاء النفسية” 😄</p>
+      </div>
+
+      <div class="card">
+        <h3>آخر 8 حالات</h3>
+        <div id="cases"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/pages/admin.js"></script>
+</body>
+</html>
