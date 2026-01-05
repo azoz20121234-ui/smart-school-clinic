@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>لوحة الطبيب</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h2>👨‍⚕️ لوحة الطبيب</h2>
+
+<div id="doctorView" class="card"></div>
+
+<h3>🕒 سجل الحالة</h3>
+<ul id="timeline"></ul>
+
+<a href="index.html">⬅️ رجوع</a>
+
+<script type="module">
+import { state } from "./js/state.js";
+
+function render(){
+  if(!state.currentCase){
+    doctorView.innerHTML = "لا توجد حالة حالياً";
+    return;
+  }
+  doctorView.innerHTML = `
+    <p>الشكوى: ${state.currentCase.complaint}</p>
+    <p>${state.currentCase.triage.note}</p>
+  `;
+
+  timeline.innerHTML = "";
+  state.timeline.forEach(e=>{
+    const li = document.createElement("li");
+    li.textContent = `${e.time} — ${e.title}`;
+    timeline.appendChild(li);
+  });
+}
+render();
+</script>
+</body>
+</html>
