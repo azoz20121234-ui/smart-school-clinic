@@ -1,60 +1,20 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>العيادة المدرسية الذكية | MVP</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <title>العيادة المدرسية الذكية</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="center">
 
-<!-- Live Status -->
-<div id="liveStatus" class="live-status">
-  <span>🟢 النظام يعمل</span>
-  <span id="doctorStatus">👨‍⚕️ الطبيب متاح</span>
-  <span id="caseCount">📋 الحالات اليوم: 0</span>
-  <span id="lastUpdate">⏱ آخر تحديث: --</span>
+<h1>🏥 العيادة المدرسية الذكية</h1>
+<p>اختر نوع الدخول</p>
+
+<div class="grid">
+  <a href="student.html" class="card">👨‍🎓 دخول طالب</a>
+  <a href="doctor.html" class="card">👨‍⚕️ دخول طبيب</a>
+  <a href="parent.html" class="card">👨‍👩‍👧 دخول ولي أمر</a>
 </div>
 
-<h1>🏥 العيادة المدرسية الذكية (MVP)</h1>
-
-<!-- Input -->
-<section class="card">
-  <h3>بيانات الطالب</h3>
-  <input id="complaint" placeholder="اكتب الشكوى (صداع، حرارة، دوخة...)" />
-
-  <button onclick="startVitals()">▶️ بدء القياس (IoT محاكاة)</button>
-
-  <div class="vitals">
-    <div>🌡 الحرارة: <span id="temp">--</span></div>
-    <div>❤️ النبض: <span id="hr">--</span></div>
-    <div>🫁 SpO₂: <span id="spo2">--</span></div>
-  </div>
-
-  <button class="primary" onclick="createCase()">📨 إنشاء الحالة</button>
-</section>
-
-<!-- Result -->
-<section class="card">
-  <h3>🧠 نتيجة الفرز</h3>
-  <p id="triageResult">—</p>
-</section>
-
-<!-- Timeline -->
-<section class="card">
-  <h3>🕒 سجل الحالة</h3>
-  <ul id="timeline"></ul>
-</section>
-
-<!-- PDF -->
-<section class="card">
-  <button onclick="exportReport()">📄 تصدير تقرير PDF</button>
-</section>
-
-<footer>
-  <p>AI-assisted triage (Rule-based in MVP phase)</p>
-  <p>Smart School Clinic Initiative © 2026</p>
-</footer>
-
-<script src="app.js"></script>
 </body>
 </html>
