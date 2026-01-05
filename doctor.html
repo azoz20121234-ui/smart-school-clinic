@@ -1,42 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>لوحة الطبيب</title>
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>لوحة الطبيب</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand"><div class="logo"></div><div class="title">لوحة الطبيب</div></div>
+      <div class="row">
+        <a class="badge" href="index.html">العودة</a>
+      </div>
+    </div>
 
-<h2>👨‍⚕️ لوحة الطبيب</h2>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card">
+        <h3>الطلبات</h3>
+        <div id="caseBox" class="muted">لا توجد حالة حالياً.</div>
+        <hr class="sep"/>
+        <h3>توصية الطبيب</h3>
+        <textarea id="rec" placeholder="اكتب توصية الطبيب…"></textarea>
+        <div class="btns">
+          <button class="primary" id="accept">اعتماد + بدء مراجعة</button>
+          <button class="info" id="saveRec">حفظ التوصية</button>
+          <button class="danger" id="close">إغلاق الحالة</button>
+        </div>
+      </div>
 
-<div id="doctorView" class="card"></div>
+      <div class="card">
+        <h3>🕒 سجل التدقيق</h3>
+        <ul id="events" class="timeline"></ul>
+      </div>
+    </div>
+  </div>
 
-<h3>🕒 سجل الحالة</h3>
-<ul id="timeline"></ul>
-
-<a href="index.html">⬅️ رجوع</a>
-
-<script type="module">
-import { state } from "./js/state.js";
-
-function render(){
-  if(!state.currentCase){
-    doctorView.innerHTML = "لا توجد حالة حالياً";
-    return;
-  }
-  doctorView.innerHTML = `
-    <p>الشكوى: ${state.currentCase.complaint}</p>
-    <p>${state.currentCase.triage.note}</p>
-  `;
-
-  timeline.innerHTML = "";
-  state.timeline.forEach(e=>{
-    const li = document.createElement("li");
-    li.textContent = `${e.time} — ${e.title}`;
-    timeline.appendChild(li);
-  });
-}
-render();
-</script>
+  <script type="module" src="js/pages/doctor.js"></script>
 </body>
 </html>
